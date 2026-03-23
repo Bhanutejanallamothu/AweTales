@@ -1,10 +1,16 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { motion } from 'framer-motion';
 
 function Settings() {
   return (
-    <>
+    <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 1.05 }}
+        transition={{ duration: 0.6 }}
+    >
       <Header />
       <main className="book-layout-wrapper">
           <div className="desk-atmosphere">
@@ -58,9 +64,15 @@ function Settings() {
                   <p className="page-subtitle">The final pages of the reference index.</p>
 
                   <div className="action-row" style={{marginTop:'40px'}}>
-                      <h4 style={{fontFamily:'var(--font-elegant)', marginBottom:'10px'}}>Export Data</h4>
+                      <h4 style={{fontFamily:'var(--font-elegant)', marginBottom:'10px', color:'var(--color-ink-dark)'}}>Export Data</h4>
                       <p style={{fontSize:'0.9rem', color:'var(--color-ink-light)', marginBottom:'15px'}}>Retrieve all written works and voice artifacts from our vaults.</p>
-                      <button className="btn-enter-story"><i className="fa-solid fa-download"></i> Download Your Story Scrolls</button>
+                      <motion.button 
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="btn-enter-story"
+                      >
+                          <i className="fa-solid fa-download"></i> Download Your Story Scrolls
+                      </motion.button>
                   </div>
 
                   <div className="danger-zone" style={{marginTop:'80px', background:'rgba(153, 27, 27, 0.05)', border:'1px solid rgba(153, 27, 27, 0.3)', padding:'30px', borderRadius:'8px'}}>
@@ -68,13 +80,20 @@ function Settings() {
                       <p style={{fontSize:'0.9rem', color:'var(--color-ink-dark)', marginBottom:'20px'}}>
                           This action is permanent. All voices, stories, and heroes will be lost to the winds of time.
                       </p>
-                      <button className="btn-wax-seal" style={{padding:'10px 20px', fontSize:'1rem'}}>Delete Storyweaver Account</button>
+                      <motion.button 
+                          whileHover={{ scale: 1.05, boxShadow: "0 8px 15px rgba(153,27,27,0.4)" }}
+                          whileTap={{ scale: 0.95 }}
+                          className="btn-wax-seal" 
+                          style={{padding:'10px 20px', fontSize:'1rem'}}
+                      >
+                          Delete Storyweaver Account
+                      </motion.button>
                   </div>
               </div>
           </div>
       </main>
       <Footer />
-    </>
+    </motion.div>
   );
 }
 

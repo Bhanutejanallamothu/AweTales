@@ -1,10 +1,16 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { motion } from 'framer-motion';
 
 function Profile() {
   return (
-    <>
+    <motion.div 
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 1.05 }}
+        transition={{ duration: 0.6 }}
+    >
       <Header />
       <main className="book-layout-wrapper">
           <div className="desk-atmosphere">
@@ -20,25 +26,30 @@ function Profile() {
                   <p className="page-subtitle">Add a child to begin their story journey.</p>
                   
                   <div className="children-list">
-                      <div className="child-hero-card">
+                      <motion.div whileHover={{ scale: 1.02, x: 5 }} className="child-hero-card">
                           <div className="child-avatar"><i className="fa-solid fa-face-smile"></i></div>
                           <div className="child-details">
                               <h4>Leo</h4>
-                              <p><i className="fa-solid fa-moon"></i> Favorite Story: The Brave Dragon</p>
+                              <p><i className="fa-solid fa-sun"></i> Favorite Story: The Brave Dragon</p>
                           </div>
-                      </div>
-                      <div className="child-hero-card">
+                      </motion.div>
+                      <motion.div whileHover={{ scale: 1.02, x: 5 }} className="child-hero-card">
                           <div className="child-avatar"><i className="fa-solid fa-face-laugh-beam"></i></div>
                           <div className="child-details">
                               <h4>Maya</h4>
-                              <p><i className="fa-solid fa-moon"></i> Favorite Story: Whispers of the Moon</p>
+                              <p><i className="fa-solid fa-sun"></i> Favorite Story: Whispers of the Morning</p>
                           </div>
-                      </div>
+                      </motion.div>
                   </div>
                   
-                  <button className="btn-enter-story" style={{marginTop:'30px'}}>
+                  <motion.button 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="btn-enter-story" 
+                      style={{marginTop:'30px'}}
+                  >
                       <i className="fa-solid fa-plus"></i> Add New Story Hero
-                  </button>
+                  </motion.button>
               </div>
 
               {/* Right Page (Storyteller Info) */}
@@ -66,20 +77,29 @@ function Profile() {
                           </div>
                       </div>
                       
-                      <button className="btn-wax-seal">Rewrite This Page</button>
+                      <motion.button 
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          className="btn-wax-seal"
+                      >
+                          Rewrite This Page
+                      </motion.button>
                   </div>
 
-                  <div className="story-progress-box">
+                  <motion.div 
+                      whileHover={{ rotate: 0 }}
+                      className="story-progress-box"
+                  >
                       <h4 style={{fontFamily:'var(--font-fantasy)', marginBottom:'10px'}}>Your Story Journey Progress</h4>
-                      <p style={{fontSize:'0.9rem', marginBottom:'5px'}}><i className="fa-solid fa-hourglass-start"></i> Membership Since: Oct 2025</p>
-                      <p style={{fontSize:'0.9rem', marginBottom:'5px'}}><i className="fa-solid fa-flask"></i> Story Credits Energy: 850</p>
-                      <p style={{fontSize:'0.9rem'}}><i className="fa-solid fa-medal"></i> Story Level: Master Weaver</p>
-                  </div>
+                      <p style={{fontSize:'0.9rem', marginBottom:'5px', color:'var(--color-ink-dark)'}}><i className="fa-solid fa-hourglass-start"></i> Membership Since: Oct 2025</p>
+                      <p style={{fontSize:'0.9rem', marginBottom:'5px', color:'var(--color-ink-dark)'}}><i className="fa-solid fa-flask"></i> Story Credits Energy: 850</p>
+                      <p style={{fontSize:'0.9rem', color:'var(--color-ink-dark)'}}><i className="fa-solid fa-medal"></i> Story Level: Master Weaver</p>
+                  </motion.div>
               </div>
           </div>
       </main>
       <Footer />
-    </>
+    </motion.div>
   );
 }
 

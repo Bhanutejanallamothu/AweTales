@@ -1,4 +1,4 @@
-/* ABOUT PAGE - ORIGIN STORY */
+/* ABOUT PAGE - BRIGHT ORIGIN STORY */
 .story-origin-journey {
     background: var(--color-parchment-light);
     color: var(--color-ink-dark);
@@ -26,21 +26,18 @@
     100% { transform: translateX(-50%) rotate(360deg); }
 }
 
-.origin-content {
-    position: relative;
-    z-index: 10;
-}
-.fantasy-title { font-size: 3.5rem; margin-bottom: 25px; }
-.origin-subtitle { font-size: 1.3rem; color: var(--color-ink-light); max-width: 700px; margin: 0 auto; font-family: var(--font-elegant); font-style: italic; }
+.origin-content { position: relative; z-index: 10; }
+.fantasy-title { font-size: 3.5rem; margin-bottom: 25px; font-family: var(--font-fantasy); }
+.origin-subtitle { font-size: 1.3rem; max-width: 700px; margin: 0 auto; font-family: var(--font-elegant); font-style: italic; }
 
 /* Chapter Mission */
 .story-chapter-section { padding: 80px 0; }
 .parchment-chapter-card {
-    background: #fffdf8;
-    border: 1px solid #e1d5c9;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
     padding: 60px;
-    border-radius: 4px;
-    box-shadow: inset 0 0 50px rgba(212, 187, 150, 0.15), 0 15px 40px rgba(0,0,0,0.05);
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.05);
     position: relative;
     max-width: 800px;
     margin: 0 auto;
@@ -51,52 +48,49 @@
     padding: 6px 20px; border-radius: 20px; font-family: var(--font-fantasy);
     font-size: 0.9rem; letter-spacing: 1px; box-shadow: 0 4px 10px rgba(251, 191, 36, 0.3);
 }
-.chapter-icon { font-size: 2.5rem; color: var(--color-magic-purple); margin-bottom: 20px; }
+.chapter-icon { font-size: 2.5rem; margin-bottom: 20px; }
 .chapter-content h2 { margin-bottom: 25px; font-size: 2.2rem; }
-.chapter-content p { font-size: 1.2rem; line-height: 1.8; color: var(--color-ink-light); }
+.chapter-content p { font-size: 1.2rem; line-height: 1.8; }
 
-/* Timeline Adventure */
-.timeline-adventure { padding: 100px 0; background: var(--color-night-900); color: white; }
-.timeline-heading { font-size: 2.8rem; margin-bottom: 60px; }
+/* Timeline Adventure (Daylight theme) */
+.timeline-adventure { 
+    padding: 100px 0; 
+    background: linear-gradient(180deg, var(--color-sky-500) 0%, var(--color-sky-100) 100%); 
+}
+.timeline-heading { font-size: 2.8rem; margin-bottom: 60px; font-family: var(--font-fantasy); }
 .glowing-path-container { position: relative; max-width: 800px; margin: 0 auto; padding: 20px 0; }
 .timeline-line {
     position: absolute; left: 50%; top: 0; bottom: 0; width: 4px;
-    background: linear-gradient(to bottom, var(--color-magic-gold), var(--color-magic-purple));
+    background: linear-gradient(to bottom, var(--color-magic-gold), var(--color-magic-teal));
     transform: translateX(-50%);
     box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
 }
-.timeline-orb-item {
-    position: relative; margin-bottom: 80px; width: 50%;
-}
+.timeline-orb-item { position: relative; margin-bottom: 80px; width: 50%; }
 .timeline-orb-item:last-child { margin-bottom: 0; }
 .timeline-orb-item.left-side { left: 0; padding-right: 50px; text-align: right; }
 .timeline-orb-item.right-side { left: 50%; padding-left: 50px; }
 
 .orb {
     position: absolute; top: 10%; width: 40px; height: 40px; border-radius: 50%;
-    background: var(--color-magic-purple); border: 2px solid white;
+    background: white; border: 2px solid var(--color-magic-gold);
     display: flex; align-items: center; justify-content: center;
     color: var(--color-magic-gold); font-size: 1.1rem;
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.6); z-index: 5;
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.6); z-index: 5;
 }
 .left-side .orb { right: -20px; }
 .right-side .orb { left: -20px; }
 
 .timeline-content {
-    background: rgba(255,255,255,0.05); padding: 30px; border-radius: 16px;
-    border: 1px solid rgba(255,255,255,0.1);
-    transition: all 0.3s;
-}
-.timeline-content:hover {
-    transform: translateY(-5px); box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
-    border-color: rgba(139, 92, 246, 0.5);
+    background: rgba(255,255,255,0.9); padding: 30px; border-radius: 16px;
+    border: 1px solid rgba(251,191,36,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 }
 .year { color: var(--color-magic-gold); font-family: var(--font-fantasy); font-size: 1.2rem; display: block; margin-bottom: 10px; }
-.timeline-content h3 { font-size: 1.6rem; color: white; margin-bottom: 15px; }
+.timeline-content h3 { font-size: 1.6rem; margin-bottom: 15px; }
 
 /* Story Principles */
 .story-principles { padding: 100px 0; }
-.principles-heading { font-size: 2.8rem; margin-bottom: 60px; }
+.principles-heading { font-size: 2.8rem; margin-bottom: 60px; font-family: var(--font-fantasy); }
 .scroll-cards-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;
 }
@@ -110,7 +104,6 @@
 }
 .magical-scroll-card::before { top: 0; border-radius: 8px 8px 0 0; }
 .magical-scroll-card::after { bottom: 0; border-radius: 0 0 8px 8px; }
-.magical-scroll-card:hover { transform: translateY(-10px); }
 
 .wax-seal {
     width: 60px; height: 60px; background: #991b1b; border-radius: 50%;

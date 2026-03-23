@@ -8,25 +8,25 @@ MAGIC STORYBOOK THEME FOUNDATION
 */
 
 :root {
-  /* Night Sky Palette */
-  --color-night-100: #312e81; /* Deep violet sky */
-  --color-night-500: #1e293b; /* Mid night sky */
-  --color-night-900: #0f172a; /* Core darkness */
+  /* Daylight Sky Palette */
+  --color-sky-100: #ffffff; 
+  --color-sky-500: #f0f9ff; 
+  --color-sky-900: #e0f2fe; 
   
   /* Parchment & Warmth Palette */
-  --color-parchment-light: #fff7ed;
-  --color-parchment-mid: #fef3c7;
-  --color-parchment-dark: #fde68a;
+  --color-parchment-light: #ffffff;
+  --color-parchment-mid: #fffcf8;
+  --color-parchment-dark: #fef4e6;
   
   /* Magic Accents */
   --color-magic-gold: #fbbf24;
   --color-magic-purple: #8b5cf6;
-  --color-magic-teal: #14b8a6;
+  --color-magic-teal: #10b981;
   
   /* Ink / Text Colors */
-  --color-ink-dark: #1e293b;
+  --color-ink-dark: #0f172a;
   --color-ink-light: #475569;
-  --color-ink-white: #f8fafc;
+  --color-ink-white: #ffffff;
   
   /* Semantic Fonts */
   --font-fantasy: 'Cinzel', serif;
@@ -42,13 +42,13 @@ MAGIC STORYBOOK THEME FOUNDATION
   --text-light: var(--color-ink-light);
   --bg-color: var(--color-parchment-light);
   
-  /* Magical Glows and Shadows */
-  --glow-subtle: 0 0 15px rgba(251, 191, 36, 0.2);
+  /* Magical Glows and Shadows for Daylight */
+  --glow-subtle: 0 0 15px rgba(251, 191, 36, 0.4);
   --glow-strong: 0 0 25px rgba(139, 92, 246, 0.5);
-  --shadow-book: 0 10px 30px rgba(0,0,0,0.1);
+  --shadow-book: 0 15px 35px rgba(0,0,0,0.08);
   --shadow-portal: 0 0 40px rgba(139, 92, 246, 0.2);
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+  --glass-bg: rgba(255, 255, 255, 0.6);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 /* Base Reset */

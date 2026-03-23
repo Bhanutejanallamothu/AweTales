@@ -1,130 +1,234 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 function Home() {
+  const { scrollYProgress } = useScroll();
+  
+  // Parallax Values mapped to scroll position
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "80%"]);
+  const opacityText = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+
   return (
-    <>
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="storybook-home"
+    >
       <Header />
-      <main className="story-realm-main">
-        {/* Hero Section: Gateway to the Story Realm */}
-        <section className="magical-hero">
-           <div className="sky-layer"></div>
-           <div className="container hero-content-layer">
-               <div className="hero-text">
-                   <h1 className="fantasy-title">Enter the World of Stories</h1>
-                   <h2 className="fantasy-subtitle text-gold-gradient">Magical Storytelling with Your Voice</h2>
-                   <p className="hero-caption">"Every voice holds a story. Let yours be heard tonight."</p>
-                   <Link to="/signup" style={{textDecoration:'none'}}>
-                       <button className="btn-begin-journey btn-large" style={{padding:'16px 36px', fontSize:'1.2rem'}}>
-                           Begin Your Story <i className="fa-solid fa-sparkles" style={{marginLeft:'8px'}}></i>
-                       </button>
-                   </Link>
-               </div>
-               <div className="hero-portals">
-                   {/* 3D floating portal cards */}
-                   <div className="portal-card p1">
-                       <i className="fa-solid fa-microphone-lines"></i>
-                       <h4>Your Voice</h4>
-                   </div>
-                   <div className="portal-card p2">
-                       <i className="fa-solid fa-book-sparkles"></i>
-                       <h4>Their Story</h4>
-                   </div>
-                   <div className="portal-card p3">
-                       <i className="fa-solid fa-heart-pulse"></i>
-                       <h4>Unbreakable Bond</h4>
-                   </div>
-               </div>
-           </div>
-        </section>
+      
+      {/* 1. HERO SECTION (Parallax) */}
+      <section className="magical-hero-section">
+          {/* Parallax Background Layers */}
+          <motion.div className="hero-sky-bg" style={{ y: yBg }}>
+              <div className="sky-sun-rays"></div>
+          </motion.div>
 
-        {/* Dream Whisper Section */}
-        <section className="dream-whisper">
-            <div className="dream-sky"></div>
-            <div className="container">
-                <div className="glass-quote-card">
-                    <i className="fa-solid fa-moon quote-icon"></i>
-                    <p className="intro-text">"A voice can travel beyond distance…"</p>
-                    <h2 className="quote-title">Your Voice, Their Dreams</h2>
-                    <p className="quote-desc">Create magical bedtime stories narrated in your own voice with AI. Connect with your children even when you're apart.</p>
-                </div>
-            </div>
-        </section>
+          <div className="container hero-content-wrapper">
+              <motion.div 
+                  className="hero-text-content"
+                  style={{ y: yText, opacity: opacityText }}
+              >
+                  <motion.div 
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.2, duration: 0.8 }}
+                      className="magic-badge"
+                  >
+                      <i className="fa-solid fa-sun" style={{color: '#fbbf24'}}></i> A Bright New Chapter
+                  </motion.div>
+                  <motion.h1 
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.4, duration: 0.8 }}
+                      className="hero-title"
+                  >
+                      Give Them the Voice They <span className="text-gold-gradient">Love Most</span>.
+                  </motion.h1>
+                  <motion.p 
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.6, duration: 0.8 }}
+                      className="hero-subtitle"
+                  >
+                      AweTales transforms your child’s bedtime with stories narrated in your own voice. The magic of morning light and endless story realms awaits.
+                  </motion.p>
+                  
+                  <motion.div 
+                      initial={{ y: 50, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 0.8, duration: 0.8 }}
+                      className="hero-actions"
+                  >
+                      <Link to="/signup" style={{textDecoration:'none'}}>
+                          <motion.button 
+                              whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(245, 158, 11, 0.4)" }}
+                              whileTap={{ scale: 0.95 }}
+                              className="btn-begin-journey"
+                          >
+                              Open First Book
+                          </motion.button>
+                      </Link>
+                      <Link to="/about" style={{textDecoration:'none'}}>
+                          <motion.button 
+                              whileHover={{ scale: 1.05, backgroundColor: 'rgba(255,255,255,0.8)' }}
+                              whileTap={{ scale: 0.95 }}
+                              className="btn-enter-story"
+                          >
+                              <i className="fa-solid fa-scroll"></i> Read Our Tale
+                          </motion.button>
+                      </Link>
+                  </motion.div>
+              </motion.div>
+              
+              <motion.div 
+                  className="hero-portal-visuals"
+                  initial={{ opacity: 0, x: 100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5, duration: 1 }}
+              >
+                  <motion.div 
+                      className="floating-book main-book"
+                      animate={{ y: [-15, 15, -15] }}
+                      transition={{ repeat: Infinity, duration: 5, ease: "easeInOut" }}
+                      whileHover={{ scale: 1.1, rotateY: 15, rotateX: 10, cursor: 'pointer' }}
+                  >
+                      <div className="book-cover daylight-cover">
+                          <i className="fa-solid fa-sun"></i>
+                          <h4>The Golden Path</h4>
+                      </div>
+                  </motion.div>
+                  
+                  <motion.div 
+                      className="floating-book secondary-book b-left"
+                      animate={{ y: [15, -15, 15] }}
+                      transition={{ repeat: Infinity, duration: 6, ease: "easeInOut" }}
+                      whileHover={{ scale: 1.15, rotateY: -15, rotateX: -10, cursor: 'pointer' }}
+                  >
+                      <div className="book-cover" style={{background: 'linear-gradient(135deg, #34d399, #059669)'}}>
+                          <i className="fa-solid fa-tree"></i>
+                      </div>
+                  </motion.div>
+                  <motion.div 
+                      className="floating-book secondary-book b-right"
+                      animate={{ y: [-10, 20, -10] }}
+                      transition={{ repeat: Infinity, duration: 7, ease: "easeInOut" }}
+                      whileHover={{ scale: 1.15, rotateY: 20, rotateX: 10, cursor: 'pointer' }}
+                  >
+                      <div className="book-cover" style={{background: 'linear-gradient(135deg, #60a5fa, #2563eb)'}}>
+                          <i className="fa-solid fa-cloud"></i>
+                      </div>
+                  </motion.div>
+              </motion.div>
+          </div>
+      </section>
 
-        {/* Meet Your Story Companions (How it Works) */}
-        <section className="story-companions">
-            <div className="container">
-                <div className="section-header text-center">
-                    <h2>Your Story Journey Begins Here</h2>
-                    <p>Three magical companions will guide you.</p>
-                </div>
-                <div className="companions-row">
-                    <div className="companion-card c-fairy">
-                        <div className="companion-avatar"><i className="fa-solid fa-wand-magic-sparkles"></i></div>
-                        <h3>Voice Fairy</h3>
-                        <p className="speech-bubble">"Give me your voice... I will turn it into magic."</p>
-                    </div>
-                    <div className="companion-card c-keeper">
-                        <div className="companion-avatar"><i className="fa-solid fa-book-journal-whills"></i></div>
-                        <h3>Story Keeper</h3>
-                        <p className="speech-bubble">"Choose a tale... I will bring it to life."</p>
-                    </div>
-                    <div className="companion-card c-guardian">
-                        <div className="companion-avatar"><i className="fa-solid fa-heart-circle-bolt"></i></div>
-                        <h3>Dream Guardian</h3>
-                        <p className="speech-bubble">"I carry your love into their dreams."</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+      {/* 2. DREAM WHISPER (Immersive Zoom) */}
+      <motion.section 
+          className="dream-whisper-section"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={{
+              hidden: { opacity: 0, scale: 0.8, rotateX: -15 },
+              visible: { opacity: 1, scale: 1, rotateX: 0, transition: { duration: 1, type: "spring", bounce: 0.4 } }
+          }}
+      >
+          <div className="container">
+              <div className="glass-quote-card daylight-glass">
+                  <div className="quote-icon text-gold-gradient"><i className="fa-solid fa-quote-left"></i></div>
+                  <h2 className="glass-quote">"It's like carrying a piece of home wherever I travel."</h2>
+                  <p className="quote-author">- Sarah, weaving tales from 3,000 miles away</p>
+              </div>
+          </div>
+      </motion.section>
 
-        {/* Stories from Loving Parents (Testimonials) */}
-        <section className="parent-stories">
-            <div className="container">
-                <div className="section-header text-center">
-                    <h2>Stories from Loving Parents</h2>
-                    <p>Moments that became memories.</p>
-                </div>
-                <div className="story-scenes-carousel">
-                    <div className="scene-card night-scene">
-                        <span className="scene-tag"><i className="fa-solid fa-moon"></i> Bedtime Memory</span>
-                        <p className="scene-quote">"Even when I travel for work, my daughter still sleeps hearing my voice. That moment... means everything."</p>
-                        <div className="scene-author">Lakshmi N.</div>
-                    </div>
-                    <div className="scene-card travel-scene">
-                        <span className="scene-tag"><i className="fa-solid fa-plane"></i> Distance Story</span>
-                        <p className="scene-quote">"The technology is incredible. My kids can't tell the difference between the AI voice and my real voice. It's like magic!"</p>
-                        <div className="scene-author">Shiv Kumar</div>
-                    </div>
-                    <div className="scene-card happy-scene">
-                        <span className="scene-tag"><i className="fa-solid fa-sun"></i> Morning Joy</span>
-                        <p className="scene-quote">"This gives me the flexibility I need while ensuring my son always has that personal connection to his bedtime stories."</p>
-                        <div className="scene-author">Emily J.</div>
-                    </div>
-                </div>
-            </div>
-        </section>
+      {/* 3. STORY COMPANIONS (3D Hover) */}
+      <section className="story-companions-section">
+          <div className="container">
+              <div className="section-header text-center">
+                  <motion.h2 
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      className="fantasy-title text-gold-gradient"
+                  >
+                      Your Story Companions
+                  </motion.h2>
+                  <motion.p 
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.1 }}
+                      className="section-subtitle"
+                  >
+                      Three magical steps to weave your child's dreams into the morning light.
+                  </motion.p>
+              </div>
+              
+              <div className="companions-grid">
+                  {[
+                    { title: "The Voice Fairy", icon: "fa-microphone-lines", desc: "Speak into the magic mirror. We safely capture the warmth and cadence of your voice." },
+                    { title: "The Story Keeper", icon: "fa-book-journal-whills", desc: "Select from our vast library of enchanted tales or craft a brand new daylight adventure." },
+                    { title: "The Dream Guardian", icon: "fa-shield-halved", desc: "Your stories are securely bound in magic, ready to be played at bedtime, anytime." }
+                  ].map((comp, idx) => (
+                      <motion.div 
+                          key={idx}
+                          className="companion-card daylight-card"
+                          initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: idx * 0.2, type: "spring", stiffness: 100 }}
+                          whileHover={{ scale: 1.08, rotateY: 12, rotateX: -8, zIndex: 10, boxShadow: "0 25px 50px rgba(0,0,0,0.1)" }}
+                      >
+                          <div className="companion-icon text-gold-gradient"><i className={`fa-solid ${comp.icon}`}></i></div>
+                          <h3 className="companion-title">{comp.title}</h3>
+                          <p className="companion-desc">{comp.desc}</p>
+                      </motion.div>
+                  ))}
+              </div>
+          </div>
+      </section>
 
-        {/* Final Open Book CTA */}
-        <section className="open-book-cta">
-            <div className="giant-book-bg">
-                <div className="magic-particles"></div>
-            </div>
-            <div className="container text-center cta-content">
-                <h2>A Story Is Waiting To Hear Your Voice...</h2>
-                <p>Step into a world where your voice becomes their favorite story. Tonight's story hasn't been told yet.</p>
-                <Link to="/signup" style={{textDecoration:'none'}}>
-                    <button className="btn-begin-journey btn-large" style={{padding:'16px 36px', fontSize:'1.2rem', marginTop: '20px'}}>
-                        Open the First Chapter
-                    </button>
-                </Link>
-            </div>
-        </section>
-      </main>
+      {/* 4. FINAL CTA (Open Book) */}
+      <motion.section 
+          className="open-book-cta-section"
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, type: "spring", bounce: 0.3 }}
+      >
+          <div className="container open-book-container-styled">
+              <div className="open-book-visual-daylight">
+                  {/* CSS book pages */}
+                  <div className="page-left"></div>
+                  <div className="page-right"></div>
+                  <div className="sunlight-dust md-1"></div>
+                  <div className="sunlight-dust md-2"></div>
+                  <div className="sunlight-dust md-3"></div>
+              </div>
+              <div className="cta-content text-center">
+                  <h2 className="cta-title">Ready to write your first chapter?</h2>
+                  <p className="cta-subtitle">The ink is waiting. Let's make the journey bright today.</p>
+                  <Link to="/signup" style={{textDecoration:'none'}}>
+                      <motion.button 
+                          whileHover={{ scale: 1.1, textShadow: "0 0 8px rgb(255,255,255)" }}
+                          whileTap={{ scale: 0.9 }}
+                          className="btn-begin-journey btn-large"
+                      >
+                          Start Your Free Tale
+                      </motion.button>
+                  </Link>
+              </div>
+          </div>
+      </motion.section>
+
       <Footer />
-    </>
+    </motion.div>
   );
 }
 
