@@ -1,141 +1,125 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 
 function Dashboard() {
-  useEffect(() => {
-    document.body.classList.add('dashboard-bg');
-    return () => document.body.classList.remove('dashboard-bg');
-  }, []);
-
   return (
     <>
-      <header className="app-header">
-          <div className="logo">
-              <Link to="/">AweTales</Link>
-          </div>
-          <div className="app-nav-right">
-              <nav className="nav-links">
-                  <Link to="/">Home</Link>
-                  <Link to="/about">About</Link>
-                  <Link to="/blog">Blog</Link>
-                  <Link to="#">Playground</Link>
-              </nav>
-              <div className="user-controls">
-                  <Link to="/dashboard" className="btn-dashboard outline-btn">Dashboard</Link>
-                  <div className="user-avatar">N</div>
-              </div>
-          </div>
-      </header>
+      <Header />
+      <main className="story-mentor-chamber">
+        <div className="chamber-bg">
+          <div className="lamp-glow"></div>
+        </div>
 
-      <main className="dashboard-main">
-          <div className="container container-large">
-              
-              <div className="dashboard-header">
-                  <h1 className="welcome-text">Welcome back, Nallamothu! ✨</h1>
-                  <p className="welcome-subtext">Ready to create some magical stories today?</p>
-              </div>
+        <div className="container chamber-content">
+            <div className="mentor-header">
+                <div className="character-guide">
+                    <div className="guide-avatar-wrapper">
+                        <i className="fa-solid fa-user-pen"></i>
+                    </div>
+                    <div className="guide-bubble">
+                        <p>"Ah, welcome back. Shall we create a new tale today?"</p>
+                    </div>
+                </div>
+                <div className="welcome-text">
+                    <h1 className="chamber-title">Your Creative Chamber</h1>
+                    <p>The ink is ready. The pages are blank.</p>
+                </div>
+            </div>
 
-              {/* Stats Row */}
-              <div className="stats-row">
-                  <div className="stat-card stat-purple">
-                      <div className="stat-content">
-                          <span>Total Stories</span>
-                          <h3>0</h3>
-                      </div>
-                      <i className="fa-solid fa-wand-magic-sparkles"></i>
-                  </div>
-                  <div className="stat-card stat-blue">
-                      <div className="stat-content">
-                          <span>Voices Created</span>
-                          <h3>0</h3>
-                      </div>
-                      <i className="fa-solid fa-users"></i>
-                  </div>
-                  <div className="stat-card stat-green">
-                      <div className="stat-content">
-                          <span>Credits</span>
-                          <h3>1000</h3>
-                      </div>
-                      <i className="fa-solid fa-bolt"></i>
-                  </div>
-                  <div className="stat-card stat-orange">
-                      <div className="stat-content">
-                          <span>Total Listens</span>
-                          <h3>0</h3>
-                      </div>
-                      <i className="fa-regular fa-circle-play"></i>
-                  </div>
-              </div>
+            <div className="dashboard-grid">
+                <div className="main-desk-area">
+                    {/* Magical Story Counters */}
+                    <div className="artifact-counters">
+                        <div className="artifact-card">
+                            <div className="artifact-icon"><i className="fa-solid fa-book-sparkles"></i></div>
+                            <div className="artifact-info">
+                                <h3>12</h3>
+                                <p>Tales Written</p>
+                            </div>
+                        </div>
+                        <div className="artifact-card">
+                            <div className="artifact-icon"><i className="fa-solid fa-microphone-lines"></i></div>
+                            <div className="artifact-info">
+                                <h3>3</h3>
+                                <p>Narrator Voices</p>
+                            </div>
+                        </div>
+                        <div className="artifact-card energy-card">
+                            <div className="artifact-icon"><i className="fa-solid fa-flask"></i></div>
+                            <div className="artifact-info">
+                                <h3>850</h3>
+                                <p>Magic Energy</p>
+                            </div>
+                        </div>
+                    </div>
 
-              {/* Main Layout Grid */}
-              <div className="dashboard-grid">
-                  
-                  {/* Left Column */}
-                  <div className="dashboard-col-main">
-                      <div className="card panel-card">
-                          <div className="panel-header">
-                              <div>
-                                  <h2>Recent Stories</h2>
-                                  <p>Your latest creations</p>
-                              </div>
-                              <button className="btn-purple-sm"><i className="fa-solid fa-plus"></i> Create Story</button>
-                          </div>
-                          
-                          <div className="empty-state">
-                              <i className="fa-solid fa-wand-magic-sparkles empty-icon"></i>
-                              <h3>No stories yet</h3>
-                              <p>Create your first voice and start making magical stories!</p>
-                              <Link to="/voices" className="btn-purple">Get Started</Link>
-                          </div>
-                      </div>
-                  </div>
+                    {/* Story Shelf */}
+                    <div className="bookshelf-section">
+                        <div className="section-title-row">
+                            <h2 className="shelf-heading"><i className="fa-solid fa-books"></i> Your Story Shelf</h2>
+                            <Link to="/voices" style={{textDecoration:'none'}}>
+                                <button className="btn-begin-journey btn-small" style={{fontSize:'0.95rem', padding:'8px 16px'}}>
+                                    Begin Story Ritual <i className="fa-solid fa-feather-pointed" style={{marginLeft:'5px'}}></i>
+                                </button>
+                            </Link>
+                        </div>
+                        
+                        <div className="wooden-shelf-container">
+                            <div className="wooden-shelf">
+                                <div className="book spine-blue">
+                                    <span className="book-title">The Courageous Dragon</span>
+                                    <div className="bookmark-ribbon br-gold"></div>
+                                </div>
+                                <div className="book spine-red">
+                                    <span className="book-title">Mystery of the Moon</span>
+                                    <div className="bookmark-ribbon br-silver"></div>
+                                </div>
+                                <div className="book spine-green">
+                                    <span className="book-title">Whispers in the Forest</span>
+                                    <div className="bookmark-ribbon br-purple"></div>
+                                </div>
+                            </div>
+                            <div className="shelf-shadow"></div>
+                        </div>
+                    </div>
+                </div>
 
-                  {/* Right Column */}
-                  <div className="dashboard-col-sidebar">
-                      
-                      {/* Subscription */}
-                      <div className="card right-panel-card">
-                          <div className="panel-header-simple">
-                              <i className="fa-solid fa-award"></i>
-                              <h2>Subscription</h2>
-                          </div>
-                          <div className="sub-status">
-                              <span className="badge badge-gray">Free</span>
-                              <button className="btn-purple-sm">Upgrade</button>
-                          </div>
-                          <p className="credits-info">Credits: 1000</p>
-                          <a href="#" className="upgrade-link">Upgrade for unlimited stories!</a>
-                      </div>
-                      
-                      {/* Quick Actions */}
-                      <div className="card right-panel-card">
-                          <div className="panel-header-simple">
-                              <h2>Quick Actions</h2>
-                          </div>
-                          <div className="action-menu">
-                              <Link to="/voices" className="action-item"><i className="fa-solid fa-user-group"></i> Create Voice</Link>
-                              <a href="#" className="action-item"><i className="fa-solid fa-plus"></i> Add Child Profile</a>
-                              <a href="#" className="action-item"><i className="fa-solid fa-arrow-trend-up"></i> Buy Credits</a>
-                          </div>
-                      </div>
-                      
-                      {/* Notifications */}
-                      <div className="card right-panel-card">
-                          <div className="panel-header-simple">
-                              <i className="fa-regular fa-bell"></i>
-                              <h2>Notifications</h2>
-                          </div>
-                          <div className="notification-item">
-                              <h4>Welcome to AweTales!</h4>
-                              <p>Welcome to AweTales! Please check your email to verify your account and start your storytelling journey.</p>
-                          </div>
-                      </div>
+                <div className="side-tools-panel">
+                    <div className="parchment-widget">
+                        <h3><i className="fa-solid fa-scroll"></i> Quick Actions</h3>
+                        <ul className="quill-menu">
+                            <li><Link to="/voices"><i className="fa-solid fa-feather"></i> Summon Narrator</Link></li>
+                            <li><Link to="/settings"><i className="fa-solid fa-key"></i> Magic Protections</Link></li>
+                            <li><Link to="/profile"><i className="fa-solid fa-book-open-reader"></i> Family Journal</Link></li>
+                        </ul>
+                    </div>
 
-                  </div>
-              </div>
-
-          </div>
+                    <div className="parchment-widget">
+                        <h3><i className="fa-solid fa-bell"></i> Chamber Whispers</h3>
+                        <ul className="notifications-list">
+                            <li>
+                                <div className="notif-icon"><i className="fa-solid fa-star"></i></div>
+                                <div className="notif-text">
+                                    <p>Your magic energy was replenished!</p>
+                                    <span>2 hours ago</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="notif-icon"><i className="fa-solid fa-book-open"></i></div>
+                                <div className="notif-text">
+                                    <p>"Courageous Dragon" is ready to read.</p>
+                                    <span>1 day ago</span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
       </main>
+      <Footer />
     </>
   );
 }

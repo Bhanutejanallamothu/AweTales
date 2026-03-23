@@ -6,130 +6,97 @@ function About() {
   return (
     <>
       <Header />
-      <main>
-        {/* Our Story Begins With Your Story */}
-        <section className="about-hero">
-            <div className="container">
-                <h1 className="section-title">Our Story Begins with Your Story</h1>
-                <p className="section-subtitle">
-                    AweTales was born from a simple belief: every child deserves to hear their loved ones' voices in their bedtime stories, no matter where life takes us. We're building technology that preserves the most precious moments of childhood.
-                </p>
-            </div>
-        </section>
+      <main className="story-origin-journey">
+          {/* Origin Hero */}
+          <section className="origin-hero">
+              <div className="warm-light-rays"></div>
+              <div className="container origin-content">
+                  <div className="origin-text text-center">
+                      <h1 className="fantasy-title text-gold-gradient">Every Great Story Has an Origin...</h1>
+                      <p className="origin-subtitle">
+                          AweTales was born from a simple wish — that no child should sleep without hearing the voice they love.
+                      </p>
+                  </div>
+              </div>
+          </section>
 
-        {/* Our Mission */}
-        <section className="our-mission">
-            <div className="container mission-grid">
-                <div className="mission-content">
-                    <h2 className="section-title text-left">Our Mission</h2>
-                    <p>We're on a mission to strengthen family bonds through the timeless magic of storytelling. By combining cutting-edge AI with the irreplaceable warmth of a parent's voice, we're creating technology that brings families closer together, not further apart.</p>
-                    <p>Every night, millions of children go to sleep without hearing their parents' voices. Whether it's due to work, travel or simply the demands of modern life, we believe no child should have to sacrifice this precious connection.</p>
-                </div>
-                <div className="mission-image-card">
-                    <div className="mission-card-inner">
-                        <i className="fa-solid fa-users"></i>
-                        <h3>Connecting Families</h3>
-                    </div>
-                    <i className="fa-solid fa-heart corner-heart-top"></i>
-                    <i className="fa-solid fa-moon corner-moon-bottom"></i>
-                </div>
-            </div>
-        </section>
+          {/* Chapter 1: Mission */}
+          <section className="story-chapter-section">
+              <div className="container">
+                  <div className="parchment-chapter-card">
+                      <div className="chapter-label">Chapter 1 — Why We Began</div>
+                      <div className="chapter-content text-center">
+                          <i className="fa-solid fa-feather-pointed chapter-icon"></i>
+                          <h2>The Promise of Bedtime</h2>
+                          <p>
+                              We traveled for work. We missed bedtimes. The video calls were never enough to replace the comforting ritual of reading a story together. We realized that technology shouldn't just connect screens; it should preserve the magic of human connection.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </section>
 
-        {/* Our Journey */}
-        <section className="our-journey bg-gray">
-            <div className="container">
-                <h2 className="section-title">Our Journey</h2>
-                <p className="section-subtitle">From a parent's frustration to a global solution—here's how AweTales came to life</p>
-                
-                <div className="timeline">
-                    <div className="timeline-item">
-                        <div className="timeline-badge badge-purple">2024</div>
-                        <div className="timeline-content">
-                            <h3>The Spark of Innovation</h3>
-                            <p>Founded by parents who understood the challenge of maintaining bedtime story traditions while managing busy lives.</p>
-                        </div>
-                    </div>
-                    <div className="timeline-item">
-                        <div className="timeline-badge badge-purple">2025</div>
-                        <div className="timeline-content">
-                            <h3>AI Breakthrough</h3>
-                            <p>Developed proprietary voice cloning technology that captures emotional nuance and personal storytelling style.</p>
-                        </div>
-                    </div>
-                    <div className="timeline-item">
-                        <div className="timeline-badge badge-purple">Present</div>
-                        <div className="timeline-content">
-                            <h3>Growing Family</h3>
-                            <p>Thousands of families worldwide creating magical bedtime moments with AweTales.</p>
-                        </div>
-                    </div>
-                    <div className="timeline-item">
-                        <div className="timeline-badge badge-purple">Future</div>
-                        <div className="timeline-content">
-                            <h3>Endless Possibilities</h3>
-                            <p>Expanding into multilingual support, interactive stories, and educational content partnerships.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+          {/* Timeline Adventure */}
+          <section className="timeline-adventure">
+              <div className="container">
+                  <h2 className="text-center timeline-heading text-gold-gradient">Path Through the Story Forest</h2>
+                  
+                  <div className="glowing-path-container">
+                      <div className="timeline-line"></div>
+                      
+                      <div className="timeline-orb-item left-side">
+                          <div className="orb"><i className="fa-solid fa-star"></i></div>
+                          <div className="timeline-content box-glow">
+                              <span className="year">2024</span>
+                              <h3>The Spark</h3>
+                              <p>The first idea was sketched on a napkin during a late-night flight.</p>
+                          </div>
+                      </div>
 
-        {/* Our Values */}
-        <section className="our-values">
-            <div className="container">
-                <h2 className="section-title">Our Values</h2>
-                <p className="section-subtitle">The principles that guide everything we do at AweTales</p>
-                
-                <div className="values-grid">
-                    <div className="value-card">
-                        <div className="value-header">
-                            <i className="fa-solid fa-heart"></i>
-                            <h3>Family First</h3>
-                        </div>
-                        <p>Every feature we build starts with a simple question: How can this bring families closer together?</p>
-                    </div>
-                    <div className="value-card">
-                        <div className="value-header">
-                            <i className="fa-solid fa-shield"></i>
-                            <h3>Privacy & Trust</h3>
-                        </div>
-                        <p>Your family's voice data is sacred. We use bank-level encryption and never share personal information.</p>
-                    </div>
-                    <div className="value-card">
-                        <div className="value-header">
-                            <i className="fa-solid fa-star"></i>
-                            <h3>Magical Experiences</h3>
-                        </div>
-                        <p>We believe technology should feel like magic, not mechanics. Every interaction should spark wonder.</p>
-                    </div>
-                    <div className="value-card">
-                        <div className="value-header">
-                            <i className="fa-solid fa-globe"></i>
-                            <h3>Inclusive Storytelling</h3>
-                        </div>
-                        <p>Stories should reflect the beautiful diversity of families worldwide. Everyone deserves to see themselves in tales of wonder.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                      <div className="timeline-orb-item right-side">
+                          <div className="orb"><i className="fa-solid fa-wand-magic-sparkles"></i></div>
+                          <div className="timeline-content box-glow">
+                              <span className="year">2025</span>
+                              <h3>Voice Magic Born</h3>
+                              <p>We successfully cloned the first parent voice, reading a public domain fairy tale.</p>
+                          </div>
+                      </div>
 
-        {/* Built by Parents */}
-        <section className="built-by-parents bg-gray">
-            <div className="container">
-                <h2 className="section-title">Built by Parents, for Parents</h2>
-                <p className="section-subtitle">Our team combines decades of experience in AI, child development, and storytelling. But most importantly, we're all parents who understand the magic of bedtime stories.</p>
-                
-                <div className="quote-card-large">
-                    <i className="fa-solid fa-quote-left quote-icon"></i>
-                    <p className="large-quote">"We started AweTales because we know that a parent's voice is irreplaceable. Technology should amplify love, not replace it. Every feature we build is tested by our own families first."</p>
-                    <div className="quote-author">
-                        <h4>The AweTales Team</h4>
-                        <span>Parents, Engineers, Dreamers</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+                      <div className="timeline-orb-item left-side">
+                          <div className="orb"><i className="fa-brands fa-fort-awesome"></i></div>
+                          <div className="timeline-content box-glow">
+                              <span className="year">Present</span>
+                              <h3>Growing Story Kingdom</h3>
+                              <p>Thousands of children now sleep peacefully to the sound of their loved ones every night.</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </section>
+
+          {/* Story Principles (Values) */}
+          <section className="story-principles">
+              <div className="container">
+                  <h2 className="text-center principles-heading">Our Guiding Runes</h2>
+                  <div className="scroll-cards-grid">
+                      <div className="magical-scroll-card">
+                          <div className="wax-seal"><i className="fa-solid fa-heart"></i></div>
+                          <h3>Family First</h3>
+                          <p>"Technology should bring hearts closer — never replace them."</p>
+                      </div>
+                      <div className="magical-scroll-card">
+                          <div className="wax-seal"><i className="fa-solid fa-wand-sparkles"></i></div>
+                          <h3>Magic Experiences</h3>
+                          <p>"Every bedtime story should feel like a dream unfolding."</p>
+                      </div>
+                      <div className="magical-scroll-card">
+                          <div className="wax-seal"><i className="fa-solid fa-shield-halved"></i></div>
+                          <h3>Safe Realms</h3>
+                          <p>"Your voice is your bond. We protect it with the highest magic (and encryption)."</p>
+                      </div>
+                  </div>
+              </div>
+          </section>
       </main>
       <Footer />
     </>

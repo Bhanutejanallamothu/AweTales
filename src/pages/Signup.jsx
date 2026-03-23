@@ -5,8 +5,8 @@ function Signup() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.body.classList.add('auth-page');
-    return () => document.body.classList.remove('auth-page');
+    document.body.classList.add('magical-portal-bg');
+    return () => document.body.classList.remove('magical-portal-bg');
   }, []);
 
   const handleSignup = (e) => {
@@ -15,64 +15,64 @@ function Signup() {
   };
 
   return (
-    <div className="auth-card signup-card">
-        <div className="auth-icon">
-            <i className="fa-solid fa-user-plus"></i>
-        </div>
-        
-        <h2>Create Your Account</h2>
-        <p className="auth-subtitle">Join AweTales and start creating magical stories with your voice</p>
-        
-        <form className="auth-form" onSubmit={handleSignup}>
-            <div className="form-row">
-                <div className="form-group">
-                    <label>First Name</label>
-                    <div className="input-with-icon">
-                        <i className="fa-regular fa-user"></i>
-                        <input type="text" placeholder="First name" required />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>Last Name</label>
-                    <div className="input-with-icon">
-                        <i className="fa-regular fa-user"></i>
-                        <input type="text" placeholder="Last name" required />
-                    </div>
-                </div>
-            </div>
-            
-            <div className="form-group">
-                <label>Email</label>
-                <div className="input-with-icon">
-                    <i className="fa-regular fa-envelope"></i>
-                    <input type="email" placeholder="Enter your email" required />
-                </div>
-            </div>
-            
-            <div className="form-group">
-                <label>Password</label>
-                <div className="input-with-icon">
-                    <i className="fa-solid fa-lock"></i>
-                    <input type="password" placeholder="Create password" required />
-                    <i className="fa-regular fa-eye toggle-password"></i>
-                </div>
-            </div>
+    <div className="auth-portal-container">
+        <div className="giant-portal-ring"></div>
+        <div className="ambient-forest-mist"></div>
 
-            <div className="form-group">
-                <label>Confirm Password</label>
-                <div className="input-with-icon">
-                    <i className="fa-solid fa-lock"></i>
-                    <input type="password" placeholder="Confirm password" required />
-                    <i className="fa-regular fa-eye toggle-password"></i>
-                </div>
+        <div className="auth-portal-card signup-portal">
+            <div className="portal-icon">
+                <i className="fa-solid fa-wand-magic-sparkles"></i>
             </div>
             
-            <button type="submit" className="btn-auth">Create Account</button>
-        </form>
-        
-        <div className="auth-footer">
-            <p>Already have an account? <Link to="/login">Sign in</Link></p>
-            <Link to="/" className="back-link">&larr; Back to Home</Link>
+            <h2 className="portal-title">Begin Your Story Journey</h2>
+            <p className="portal-subtitle">Step into a world where your voice becomes magic.</p>
+            
+            <form className="magic-form" onSubmit={handleSignup}>
+                <div className="form-row">
+                    <div className="magic-group">
+                        <label>First Name</label>
+                        <div className="magic-input-wrapper">
+                            <i className="fa-solid fa-feather-pointed"></i>
+                            <input type="text" placeholder="Your storyteller name..." required />
+                            <span className="ink-underline"></span>
+                        </div>
+                    </div>
+                    <div className="magic-group">
+                        <label>Last Name</label>
+                        <div className="magic-input-wrapper">
+                            <i className="fa-solid fa-feather-pointed"></i>
+                            <input type="text" placeholder="Your family name..." required />
+                            <span className="ink-underline"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div className="magic-group">
+                    <label>Email Address</label>
+                    <div className="magic-input-wrapper">
+                        <i className="fa-solid fa-envelope-open-text"></i>
+                        <input type="email" placeholder="Where shall we send your tales..." required />
+                        <span className="ink-underline"></span>
+                    </div>
+                </div>
+                
+                <div className="magic-group">
+                    <label>Create Secret Spell (Password)</label>
+                    <div className="magic-input-wrapper">
+                        <i className="fa-solid fa-key"></i>
+                        <input type="password" placeholder="Create your secret spell..." required />
+                        <i className="fa-regular fa-eye toggle-password"></i>
+                        <span className="ink-underline"></span>
+                    </div>
+                </div>
+                
+                <button type="submit" className="btn-adventure">Open Your First Chapter</button>
+            </form>
+            
+            <div className="portal-footer">
+                <p>Already joined the realm? <Link to="/login">Enter Story</Link></p>
+                <Link to="/" className="back-link">&larr; Return to Library</Link>
+            </div>
         </div>
     </div>
   );

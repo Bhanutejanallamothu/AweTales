@@ -10,7 +10,9 @@ import './styles/about.css'
 import './styles/blog.css'
 import './styles/auth.css'
 import './styles/dashboard.css'
-import './styles/hero.css'
+import './styles/home-magical.css'
+import './styles/components.css'
+import './styles/book-layouts.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

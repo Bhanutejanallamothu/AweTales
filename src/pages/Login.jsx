@@ -5,8 +5,8 @@ function Login() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.body.classList.add('auth-page');
-    return () => document.body.classList.remove('auth-page');
+    document.body.classList.add('magical-portal-bg');
+    return () => document.body.classList.remove('magical-portal-bg');
   }, []);
 
   const handleLogin = (e) => {
@@ -15,41 +15,49 @@ function Login() {
   };
 
   return (
-    <div className="auth-card">
-        <div className="auth-icon">
-            <i className="fa-solid fa-arrow-right-to-bracket"></i>
-        </div>
-        
-        <h2>Welcome Back</h2>
-        <p className="auth-subtitle">Sign in to your AweTales account to continue creating magical stories</p>
-        
-        <form className="auth-form" onSubmit={handleLogin}>
-            <div className="form-group">
-                <label>Email</label>
-                <div className="input-with-icon">
-                    <i className="fa-regular fa-envelope"></i>
-                    <input type="email" placeholder="Enter your email" required />
-                </div>
+    <div className="auth-portal-container">
+        {/* Background ambient portal */}
+        <div className="giant-portal-ring"></div>
+        <div className="ambient-forest-mist"></div>
+
+        <div className="auth-portal-card">
+            <div className="portal-icon">
+                <i className="fa-solid fa-book-open-reader"></i>
             </div>
             
-            <div className="form-group">
-                <div className="label-row">
-                    <label>Password</label>
-                    <a href="#" className="forgot-link">Forgot password?</a>
-                </div>
-                <div className="input-with-icon">
-                    <i className="fa-solid fa-lock"></i>
-                    <input type="password" placeholder="Enter your password" required />
-                    <i className="fa-regular fa-eye toggle-password"></i>
-                </div>
-            </div>
+            <h2 className="portal-title">Return to Your Story</h2>
+            <p className="portal-subtitle">The next chapter is waiting for your voice.</p>
             
-            <button type="submit" className="btn-auth">Sign In</button>
-        </form>
-        
-        <div className="auth-footer">
-            <p>Don't have an account? <Link to="/signup">Sign up</Link></p>
-            <Link to="/" className="back-link">&larr; Back to Home</Link>
+            <form className="magic-form" onSubmit={handleLogin}>
+                <div className="magic-group">
+                    <label>Storyteller Email</label>
+                    <div className="magic-input-wrapper">
+                        <i className="fa-solid fa-feather-pointed"></i>
+                        <input type="email" placeholder="Where shall we send your tales..." required />
+                        <span className="ink-underline"></span>
+                    </div>
+                </div>
+                
+                <div className="magic-group">
+                    <div className="label-row">
+                        <label>Secret Spell (Password)</label>
+                        <a href="#" className="forgot-link">Lost your spell?</a>
+                    </div>
+                    <div className="magic-input-wrapper">
+                        <i className="fa-solid fa-key"></i>
+                        <input type="password" placeholder="Whisper your password..." required />
+                        <i className="fa-regular fa-eye toggle-password"></i>
+                        <span className="ink-underline"></span>
+                    </div>
+                </div>
+                
+                <button type="submit" className="btn-adventure">Enter the Story World</button>
+            </form>
+            
+            <div className="portal-footer">
+                <p>A new narrator? <Link to="/signup">Begin Your Journey</Link></p>
+                <Link to="/" className="back-link">&larr; Return to Library</Link>
+            </div>
         </div>
     </div>
   );
