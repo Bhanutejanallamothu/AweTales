@@ -8,9 +8,10 @@ import StorySequenceBackground from '../components/StorySequenceBackground';
 function Home() {
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 22,
-    mass: 0.35,
+    stiffness: 54,
+    damping: 20,
+    mass: 0.65,
+    restDelta: 0.0008,
   });
 
   const yBg = useTransform(smoothProgress, [0, 1], [0, 160]);
@@ -46,7 +47,7 @@ function Home() {
                 className="magic-badge"
               >
                 <i className="fa-solid fa-sparkles" style={{ color: '#fbbf24' }}></i>{' '}
-                Smooth Parallax Journey
+                Scroll-Scrubbed Story Reel
               </motion.div>
 
               <motion.h1
@@ -65,8 +66,8 @@ function Home() {
                 className="hero-subtitle"
               >
                 AweTales transforms your child's bedtime with stories narrated in your own
-                voice, now layered over a smooth cinematic parallax world that keeps moving
-                behind every section.
+                voice, now backed by a smooth cinematic frame sequence that advances like a
+                video as you scroll through the page.
               </motion.p>
 
               <motion.div

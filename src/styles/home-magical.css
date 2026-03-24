@@ -1,4 +1,4 @@
-/* MAGICAL HOMEPAGE STYLES - Smooth Parallax Edition */
+/* MAGICAL HOMEPAGE STYLES - Scroll Sequence Edition */
 .storybook-home {
     position: relative;
     overflow-x: hidden;
@@ -11,133 +11,79 @@
     z-index: 1;
 }
 
-.story-parallax-background {
+.story-sequence-background {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
-    background: linear-gradient(180deg, #021018 0%, #041625 48%, #03111c 100%);
+    background: #020b13;
 }
 
-.story-parallax-layer {
-    position: absolute;
-    top: -24vh;
-    left: -12vw;
-    width: 124vw;
-    height: 280vh;
-    will-change: transform;
-}
-
-.story-parallax-band {
-    position: absolute;
-    width: 112vw;
-    height: 62vh;
-    border-radius: 40px;
-    background-size: cover;
-    background-position: center;
-    opacity: 0.22;
-    filter: saturate(0.92) brightness(0.74);
-    box-shadow: 0 40px 120px rgba(2, 6, 23, 0.28);
-}
-
-.band-top {
-    top: 0;
-    left: 0;
-    transform: rotate(-2deg);
-}
-
-.band-middle {
-    top: 86vh;
-    left: 8vw;
-    transform: rotate(1.5deg);
-}
-
-.band-bottom {
-    top: 172vh;
-    left: -3vw;
-    transform: rotate(-1.25deg);
-}
-
-.story-parallax-panels-back .story-parallax-panel {
-    opacity: 0.22;
-    filter: saturate(0.88) brightness(0.76);
-}
-
-.story-parallax-panels-front .story-parallax-panel {
-    opacity: 0.34;
-    filter: saturate(0.96) brightness(0.88);
-}
-
-.story-parallax-panel {
-    position: absolute;
-    background-size: cover;
-    background-position: center;
-    border-radius: 30px;
-    overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 30px 80px rgba(2, 6, 23, 0.28);
-}
-
-.story-parallax-panel::after {
-    content: '';
+.story-sequence-canvas {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(2, 6, 23, 0.02) 0%, rgba(2, 6, 23, 0.24) 100%);
+    width: 100%;
+    height: 100%;
+    display: block;
+    filter: saturate(0.94) brightness(0.86);
 }
 
-.story-parallax-atmosphere {
-    mix-blend-mode: screen;
-}
-
-.story-parallax-orb {
-    position: absolute;
-    border-radius: 999px;
-    filter: blur(60px);
-    opacity: 0.42;
-}
-
-.orb-one {
-    top: 18vh;
-    left: 2vw;
-    width: 24vw;
-    height: 24vw;
-    background: rgba(45, 212, 191, 0.18);
-}
-
-.orb-two {
-    top: 112vh;
-    right: 10vw;
-    width: 28vw;
-    height: 28vw;
-    background: rgba(59, 130, 246, 0.16);
-}
-
-.orb-three {
-    top: 202vh;
-    left: 38vw;
-    width: 22vw;
-    height: 22vw;
-    background: rgba(251, 191, 36, 0.16);
-}
-
-.story-parallax-texture {
-    position: absolute;
-    inset: 0;
-    opacity: 0.25;
-    background-image:
-        radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.2) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 72% 26%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.5px),
-        radial-gradient(circle at 54% 68%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.5px);
-    background-size: 30vw 30vw, 36vw 36vw, 28vw 28vw;
-}
-
-.story-parallax-overlay {
+.story-sequence-vignette {
     position: absolute;
     inset: 0;
     background:
-        linear-gradient(180deg, rgba(2, 6, 23, 0.66) 0%, rgba(2, 6, 23, 0.34) 26%, rgba(2, 6, 23, 0.42) 62%, rgba(2, 8, 17, 0.74) 100%),
-        radial-gradient(circle at top, rgba(59, 130, 246, 0.14), transparent 34%);
+        radial-gradient(circle at center, transparent 34%, rgba(2, 6, 23, 0.34) 100%),
+        linear-gradient(180deg, rgba(2, 6, 23, 0.12) 0%, rgba(2, 6, 23, 0.18) 100%);
+}
+
+.story-sequence-overlay {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(2, 6, 23, 0.68) 0%, rgba(2, 6, 23, 0.36) 24%, rgba(2, 6, 23, 0.3) 55%, rgba(2, 8, 17, 0.76) 100%),
+        radial-gradient(circle at 50% 12%, rgba(56, 189, 248, 0.16), transparent 36%);
+}
+
+.story-sequence-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.16;
+    background-image:
+        radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.22) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 74% 24%, rgba(255, 255, 255, 0.16) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 52% 62%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.5px);
+    background-size: 28vw 28vw, 34vw 34vw, 26vw 26vw;
+}
+
+.story-sequence-progress {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    width: min(560px, calc(100vw - 48px));
+    height: 4px;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(2, 6, 23, 0.25);
+}
+
+.story-sequence-progress-line,
+.story-sequence-progress-fill {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+.story-sequence-progress-line {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.story-sequence-progress-fill {
+    transform-origin: left center;
+    background: linear-gradient(90deg, rgba(251, 191, 36, 0.92) 0%, rgba(45, 212, 191, 0.95) 100%);
+    box-shadow: 0 0 18px rgba(45, 212, 191, 0.28);
 }
 
 .storybook-home .header-wrapper {
@@ -602,31 +548,9 @@
 }
 
 @media (max-width: 968px) {
-    .story-parallax-layer {
-        left: -18vw;
-        width: 136vw;
-    }
-
-    .story-parallax-band {
-        width: 122vw;
-        height: 48vh;
-        border-radius: 28px;
-    }
-
-    .story-parallax-panels-front {
-        display: none;
-    }
-
-    .story-parallax-panel {
-        width: 56vw !important;
-        height: 24vh !important;
-    }
-
-    .orb-one,
-    .orb-two,
-    .orb-three {
-        width: 42vw;
-        height: 42vw;
+    .story-sequence-progress {
+        bottom: 18px;
+        width: calc(100vw - 32px);
     }
 
     .magical-hero-section {
@@ -672,12 +596,13 @@
 }
 
 @media (max-width: 640px) {
-    .story-parallax-band {
-        opacity: 0.16;
+    .story-sequence-canvas {
+        filter: saturate(0.92) brightness(0.78);
     }
 
-    .story-parallax-panels-back .story-parallax-panel {
-        opacity: 0.16;
+    .story-sequence-progress {
+        height: 3px;
+        bottom: 14px;
     }
 
     .hero-title {
