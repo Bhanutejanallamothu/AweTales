@@ -11,7 +11,13 @@ function SmoothScroll() {
       wheelMultiplier: 0.9,
       touchMultiplier: 1,
       overscroll: true,
-      anchors: true,
+      stopInertiaOnNavigate: true,
+      anchors: {
+        offset: 128,
+        duration: 1.15,
+        lock: true,
+        easing: (t) => 1 - Math.pow(1 - t, 3),
+      },
     });
 
     return () => {

@@ -1,35 +1,46 @@
-import React, { useEffect, useRef } from 'react';
-import { motion, useMotionValueEvent, useReducedMotion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { animate, motion, useMotionValue, useMotionValueEvent, useReducedMotion } from 'framer-motion';
 
 const FRAME_COUNT = 236;
-const MAX_CACHED_FRAMES = 42;
-const FRAME_EASING = 0.1;
-const FRAME_WINDOW = 10;
-const REDRAW_THRESHOLD = 0.015;
+const LAST_FRAME_INDEX = FRAME_COUNT - 1;
+const MAX_CACHED_FRAMES = 48;
+const FRAME_EASING = 0.14;
+const FRAME_WINDOW = 12;
+const REDRAW_THRESHOLD = 0.02;
+const INTRO_DURATION_SECONDS = 5.4;
 
 function clampFrame(index) {
-  return Math.max(0, Math.min(FRAME_COUNT - 1, index));
+  return Math.max(0, Math.min(LAST_FRAME_INDEX, index));
 }
 
 function clampProgress(frame) {
-  return Math.max(0, Math.min(FRAME_COUNT - 1, frame));
+  return Math.max(0, Math.min(LAST_FRAME_INDEX, frame));
 }
 
 function getFrameUrl(index) {
   return `/home-scroll-frames/ezgif-frame-${String(index + 1).padStart(3, '0')}.jpg`;
 }
 
-function StorySequenceBackground({ scrollYProgress }) {
+function StorySequenceBackground({ onIntroComplete }) {
   const prefersReducedMotion = useReducedMotion();
+  const introProgress = useMotionValue(0);
   const canvasRef = useRef(null);
   const loadedFramesRef = useRef(new Map());
   const requestedFramesRef = useRef(new Set());
   const animationFrameRef = useRef(null);
+  const introControlsRef = useRef(null);
   const currentFrameRef = useRef(0);
   const targetFrameRef = useRef(0);
   const renderedFrameRef = useRef(-1);
   const progressValueRef = useRef(0);
   const isMountedRef = useRef(false);
+  const introCompletedRef = useRef(false);
+  const introCompleteCallbackRef = useRef(onIntroComplete);
+  const [isSettled, setIsSettled] = useState(false);
+
+  useEffect(() => {
+    introCompleteCallbackRef.current = onIntroComplete;
+  }, [onIntroComplete]);
 
   function drawCoverImage(context, image, canvasWidth, canvasHeight, alpha) {
     const imageWidth = image.naturalWidth || image.width;
@@ -155,8 +166,10 @@ function StorySequenceBackground({ scrollYProgress }) {
     const image = new Image();
     image.decoding = 'async';
     image.loading = 'eager';
-    image.fetchPriority = Math.abs(safeFrame - currentFrameRef.current) < 3 ? 'high' : 'low';
+    image.fetchPriority =
+      safeFrame < 4 || safeFrame > LAST_FRAME_INDEX - 4 ? 'high' : 'low';
     image.src = getFrameUrl(safeFrame);
+
     image.onload = async () => {
       try {
         if (image.decode) {
@@ -170,14 +183,15 @@ function StorySequenceBackground({ scrollYProgress }) {
       loadedFramesRef.current.set(safeFrame, image);
       trimCache(Math.round(currentFrameRef.current));
 
-      const desiredFrame = currentFrameRef.current;
       if (
         renderedFrameRef.current === -1 ||
-        Math.abs(safeFrame - desiredFrame) <= 1
+        Math.abs(safeFrame - currentFrameRef.current) <= 2 ||
+        (introCompletedRef.current && safeFrame >= LAST_FRAME_INDEX - 1)
       ) {
-        drawFrame(desiredFrame);
+        drawFrame(currentFrameRef.current);
       }
     };
+
     image.onerror = () => {
       requestedFramesRef.current.delete(safeFrame);
     };
@@ -213,17 +227,28 @@ function StorySequenceBackground({ scrollYProgress }) {
     drawFrame(currentFrameRef.current);
   }
 
+  function finishIntro() {
+    if (introCompletedRef.current) {
+      return;
+    }
+
+    introCompletedRef.current = true;
+    currentFrameRef.current = LAST_FRAME_INDEX;
+    targetFrameRef.current = LAST_FRAME_INDEX;
+    progressValueRef.current = 1;
+    warmFrameWindow(LAST_FRAME_INDEX);
+    drawFrame(LAST_FRAME_INDEX);
+    setIsSettled(true);
+    introCompleteCallbackRef.current?.();
+  }
+
   function animateFrames() {
     if (!isMountedRef.current) {
       return;
     }
 
-    targetFrameRef.current = prefersReducedMotion
-      ? 0
-      : progressValueRef.current * (FRAME_COUNT - 1);
-
     const difference = targetFrameRef.current - currentFrameRef.current;
-    if (Math.abs(difference) > 0.0005) {
+    if (Math.abs(difference) > 0.001) {
       currentFrameRef.current += difference * FRAME_EASING;
     } else {
       currentFrameRef.current = targetFrameRef.current;
@@ -239,36 +264,63 @@ function StorySequenceBackground({ scrollYProgress }) {
     }
 
     warmFrameWindow(Math.round(currentFrameRef.current));
-    animationFrameRef.current = window.requestAnimationFrame(animateFrames);
-  }
 
-  useMotionValueEvent(scrollYProgress, 'change', (latest) => {
-    progressValueRef.current = latest;
-
-    if (prefersReducedMotion) {
-      currentFrameRef.current = 0;
-      targetFrameRef.current = 0;
-      warmFrameWindow(0);
-      drawFrame(0);
+    if (
+      progressValueRef.current >= 0.999 &&
+      Math.abs(LAST_FRAME_INDEX - currentFrameRef.current) < 0.35
+    ) {
+      finishIntro();
       return;
     }
 
-    const nextFrame = clampFrame(Math.round(latest * (FRAME_COUNT - 1)));
-    warmFrameWindow(nextFrame);
+    animationFrameRef.current = window.requestAnimationFrame(animateFrames);
+  }
+
+  useMotionValueEvent(introProgress, 'change', (latest) => {
+    progressValueRef.current = latest;
+    targetFrameRef.current = prefersReducedMotion ? LAST_FRAME_INDEX : latest * LAST_FRAME_INDEX;
+    warmFrameWindow(Math.round(targetFrameRef.current));
   });
 
   useEffect(() => {
     isMountedRef.current = true;
-    progressValueRef.current = scrollYProgress.get();
+    renderedFrameRef.current = -1;
+    introCompletedRef.current = false;
+    setIsSettled(false);
+    introProgress.set(0);
+    progressValueRef.current = 0;
+    currentFrameRef.current = prefersReducedMotion ? LAST_FRAME_INDEX : 0;
+    targetFrameRef.current = currentFrameRef.current;
+
     resizeCanvas();
-    warmFrameWindow(0);
-    animationFrameRef.current = window.requestAnimationFrame(animateFrames);
+    requestFrame(0);
+    requestFrame(1);
+    requestFrame(2);
+    requestFrame(LAST_FRAME_INDEX);
+    requestFrame(LAST_FRAME_INDEX - 1);
+    requestFrame(LAST_FRAME_INDEX - 2);
+    warmFrameWindow(currentFrameRef.current);
 
     const handleResize = () => {
       resizeCanvas();
     };
 
     window.addEventListener('resize', handleResize);
+
+    if (prefersReducedMotion) {
+      finishIntro();
+    } else {
+      animationFrameRef.current = window.requestAnimationFrame(animateFrames);
+      introControlsRef.current = animate(introProgress, 1, {
+        duration: INTRO_DURATION_SECONDS,
+        ease: [0.22, 1, 0.36, 1],
+        onComplete: () => {
+          progressValueRef.current = 1;
+          targetFrameRef.current = LAST_FRAME_INDEX;
+          warmFrameWindow(LAST_FRAME_INDEX);
+        },
+      });
+    }
 
     return () => {
       isMountedRef.current = false;
@@ -277,21 +329,36 @@ function StorySequenceBackground({ scrollYProgress }) {
       if (animationFrameRef.current) {
         window.cancelAnimationFrame(animationFrameRef.current);
       }
+
+      if (introControlsRef.current) {
+        introControlsRef.current.stop();
+      }
     };
-  }, [prefersReducedMotion, scrollYProgress]);
+  }, [introProgress, prefersReducedMotion]);
 
   return (
-    <div className="story-sequence-background" aria-hidden="true">
+    <div
+      className={`story-sequence-background ${isSettled ? 'is-settled' : 'is-intro-active'}`}
+      aria-hidden="true"
+    >
       <canvas ref={canvasRef} className="story-sequence-canvas"></canvas>
       <div className="story-sequence-vignette"></div>
       <div className="story-sequence-overlay"></div>
       <div className="story-sequence-grain"></div>
 
+      <div className="story-sequence-intro">
+        <p className="story-sequence-kicker">AweTales</p>
+        <h2 className="story-sequence-title">Opening the first story...</h2>
+        <span className="story-sequence-caption">
+          The final frame settles in as the world behind the website.
+        </span>
+      </div>
+
       <div className="story-sequence-progress">
         <div className="story-sequence-progress-line"></div>
         <motion.div
           className="story-sequence-progress-fill"
-          style={{ scaleX: prefersReducedMotion ? 0 : scrollYProgress }}
+          style={{ scaleX: introProgress }}
         ></motion.div>
       </div>
     </div>
