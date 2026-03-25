@@ -473,6 +473,9 @@ function StorySequenceBackground({ onIntroComplete }) {
       <canvas ref={canvasRef} className="story-sequence-canvas"></canvas>
       <div className="story-sequence-vignette"></div>
       <div className="story-sequence-overlay"></div>
+      <div className="story-sequence-aurora"></div>
+      <div className="story-sequence-lightfall"></div>
+      <div className="story-sequence-mist"></div>
       <div className="story-sequence-grain"></div>
 
       <div className="story-sequence-intro">
