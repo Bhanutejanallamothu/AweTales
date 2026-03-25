@@ -5,7 +5,7 @@ const FRAME_COUNT = 90;
 const LAST_FRAME_INDEX = FRAME_COUNT - 1;
 const FRAME_EASING = 0.18;
 const REDRAW_THRESHOLD = 0.02;
-const INTRO_DURATION_SECONDS = 5.2;
+const INTRO_DURATION_SECONDS = 10;
 
 function clampFrame(index) {
   return Math.max(0, Math.min(LAST_FRAME_INDEX, index));
