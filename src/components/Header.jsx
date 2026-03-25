@@ -14,13 +14,6 @@ function Header() {
       className="header-wrapper"
     >
       <header className="navbar custom-navbar">
-        <motion.div 
-          className="logo logo-ink"
-          whileHover={{ scale: 1.05, rotate: -2 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Link to="/">AweTales</Link>
-        </motion.div>
         <div className="nav-right-cluster">
             <nav className="story-path-nav">
                 <div className="path-line"></div>
