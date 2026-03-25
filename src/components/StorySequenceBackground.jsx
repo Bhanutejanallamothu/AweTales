@@ -1,11 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { animate, motion, useMotionValue, useReducedMotion } from 'framer-motion';
 
-const FRAME_COUNT = 90;
+const SOURCE_FRAME_COUNT = 90;
+const SOURCE_LAST_FRAME_INDEX = SOURCE_FRAME_COUNT - 1;
+const FRAME_COUNT = 54;
 const LAST_FRAME_INDEX = FRAME_COUNT - 1;
 const FRAME_EASING = 0.18;
 const REDRAW_THRESHOLD = 0.02;
 const INTRO_DURATION_SECONDS = 10;
+const INITIAL_READY_FRAMES = 10;
+const MAX_CONCURRENT_LOADS = 4;
+const MAX_CANVAS_DPR = 1.25;
+const LOAD_PROGRESS_STEP = 0.01;
+
+const SHARED_FRAME_CACHE = new Map();
+const SHARED_FRAME_PROMISES = new Map();
 
 function clampFrame(index) {
   return Math.max(0, Math.min(LAST_FRAME_INDEX, index));
@@ -15,8 +24,41 @@ function clampProgress(frame) {
   return Math.max(0, Math.min(LAST_FRAME_INDEX, frame));
 }
 
-function getFrameUrl(index) {
-  return `/home-intro-frames/intro-frame-${String(index + 1).padStart(3, '0')}.jpg`;
+function getSourceFrameIndex(index) {
+  const safePlaybackFrame = clampFrame(index);
+  if (LAST_FRAME_INDEX <= 0) {
+    return 0;
+  }
+
+  const progressRatio = safePlaybackFrame / LAST_FRAME_INDEX;
+  return Math.round(progressRatio * SOURCE_LAST_FRAME_INDEX);
+}
+
+function getFrameUrl(sourceFrameIndex) {
+  return `/home-intro-frames/intro-frame-${String(sourceFrameIndex + 1).padStart(3, '0')}.jpg`;
+}
+
+function buildLoadQueue() {
+  const priorityFrames = [];
+  const priorityLimit = Math.min(LAST_FRAME_INDEX, INITIAL_READY_FRAMES - 1);
+  for (let frame = 0; frame <= priorityLimit; frame += 1) {
+    priorityFrames.push(frame);
+  }
+
+  if (!priorityFrames.includes(LAST_FRAME_INDEX)) {
+    priorityFrames.push(LAST_FRAME_INDEX);
+  }
+
+  const prioritySet = new Set(priorityFrames);
+  const queue = [...priorityFrames];
+
+  for (let frame = 0; frame <= LAST_FRAME_INDEX; frame += 1) {
+    if (!prioritySet.has(frame)) {
+      queue.push(frame);
+    }
+  }
+
+  return { queue, prioritySet };
 }
 
 function StorySequenceBackground({ onIntroComplete }) {
@@ -31,7 +73,10 @@ function StorySequenceBackground({ onIntroComplete }) {
   const targetFrameRef = useRef(0);
   const renderedFrameRef = useRef(-1);
   const isMountedRef = useRef(false);
+  const hasPlaybackStartedRef = useRef(false);
   const introCompletedRef = useRef(false);
+  const preloadCancelledRef = useRef(false);
+  const lastReportedLoadRef = useRef(0);
   const introCompleteCallbackRef = useRef(onIntroComplete);
   const [isSettled, setIsSettled] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -59,11 +104,58 @@ function StorySequenceBackground({ onIntroComplete }) {
   }
 
   function resetContext(context, canvas) {
-    const devicePixelRatio = window.devicePixelRatio || 1;
+    const devicePixelRatio = Math.min(window.devicePixelRatio || 1, MAX_CANVAS_DPR);
     context.setTransform(1, 0, 0, 1, 0, 0);
     context.clearRect(0, 0, canvas.width, canvas.height);
     context.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
     context.globalAlpha = 1;
+  }
+
+  function reportLoadProgress() {
+    const nextProgress = Math.min(1, loadedCountRef.current / FRAME_COUNT);
+    if (
+      nextProgress === 1 ||
+      nextProgress - lastReportedLoadRef.current >= LOAD_PROGRESS_STEP
+    ) {
+      lastReportedLoadRef.current = nextProgress;
+      setLoadProgress(nextProgress);
+    }
+  }
+
+  function registerLoadedFrame(frameIndex, image) {
+    if (!image || !isMountedRef.current) {
+      return null;
+    }
+
+    if (!loadedFramesRef.current.has(frameIndex)) {
+      loadedFramesRef.current.set(frameIndex, image);
+      loadedCountRef.current += 1;
+      reportLoadProgress();
+    }
+
+    return image;
+  }
+
+  function findClosestLoadedImage(frameIndex) {
+    for (let radius = 0; radius <= LAST_FRAME_INDEX; radius += 1) {
+      const lowerIndex = frameIndex - radius;
+      if (lowerIndex >= 0) {
+        const lowerImage = loadedFramesRef.current.get(lowerIndex);
+        if (lowerImage) {
+          return lowerImage;
+        }
+      }
+
+      const upperIndex = frameIndex + radius;
+      if (upperIndex <= LAST_FRAME_INDEX && upperIndex !== lowerIndex) {
+        const upperImage = loadedFramesRef.current.get(upperIndex);
+        if (upperImage) {
+          return upperImage;
+        }
+      }
+    }
+
+    return null;
   }
 
   function drawFrame(progressFrame) {
@@ -88,8 +180,16 @@ function StorySequenceBackground({ onIntroComplete }) {
     const upperFrameIndex = clampFrame(Math.ceil(safeProgress));
     const mix = safeProgress - lowerFrameIndex;
 
-    const lowerImage = loadedFramesRef.current.get(lowerFrameIndex);
-    const upperImage = loadedFramesRef.current.get(upperFrameIndex);
+    let lowerImage = loadedFramesRef.current.get(lowerFrameIndex);
+    let upperImage = loadedFramesRef.current.get(upperFrameIndex);
+
+    if (!lowerImage) {
+      lowerImage = findClosestLoadedImage(lowerFrameIndex);
+    }
+
+    if (!upperImage) {
+      upperImage = findClosestLoadedImage(upperFrameIndex);
+    }
 
     if (!lowerImage && !upperImage) {
       return false;
@@ -97,7 +197,12 @@ function StorySequenceBackground({ onIntroComplete }) {
 
     resetContext(context, canvas);
 
-    if (lowerImage && upperImage && upperFrameIndex !== lowerFrameIndex) {
+    if (
+      lowerImage &&
+      upperImage &&
+      lowerImage !== upperImage &&
+      upperFrameIndex !== lowerFrameIndex
+    ) {
       drawCoverImage(context, lowerImage, canvasWidth, canvasHeight, 1 - mix);
       drawCoverImage(context, upperImage, canvasWidth, canvasHeight, mix);
     } else {
@@ -114,7 +219,7 @@ function StorySequenceBackground({ onIntroComplete }) {
       return;
     }
 
-    const devicePixelRatio = window.devicePixelRatio || 1;
+    const devicePixelRatio = Math.min(window.devicePixelRatio || 1, MAX_CANVAS_DPR);
     const width = window.innerWidth;
     const height = window.innerHeight;
 
@@ -171,107 +276,174 @@ function StorySequenceBackground({ onIntroComplete }) {
     animationFrameRef.current = window.requestAnimationFrame(animateFrames);
   }
 
-  function loadFrame(frameIndex) {
+  async function loadFrame(frameIndex, priority = 'low') {
     const safeFrame = clampFrame(frameIndex);
+    const sourceFrameIndex = getSourceFrameIndex(safeFrame);
 
-    return new Promise((resolve) => {
-      const image = new Image();
-      image.decoding = 'async';
-      image.loading = 'eager';
-      image.fetchPriority = safeFrame < 3 || safeFrame > LAST_FRAME_INDEX - 2 ? 'high' : 'low';
-      image.src = getFrameUrl(safeFrame);
+    const localFrame = loadedFramesRef.current.get(safeFrame);
+    if (localFrame) {
+      return localFrame;
+    }
 
-      image.onload = async () => {
-        try {
-          if (image.decode) {
-            await image.decode();
+    const sharedFrame = SHARED_FRAME_CACHE.get(sourceFrameIndex);
+    if (sharedFrame) {
+      return registerLoadedFrame(safeFrame, sharedFrame);
+    }
+
+    let sharedPromise = SHARED_FRAME_PROMISES.get(sourceFrameIndex);
+    if (!sharedPromise) {
+      sharedPromise = new Promise((resolve) => {
+        const image = new Image();
+        image.decoding = 'async';
+        image.loading = 'eager';
+        image.fetchPriority = priority;
+        image.src = getFrameUrl(sourceFrameIndex);
+
+        image.onload = async () => {
+          try {
+            if (image.decode) {
+              await image.decode();
+            }
+          } catch {
+            // Ignore decode failures and continue with the loaded image.
           }
-        } catch {
-          // Ignore decode failures and continue with the loaded image.
-        }
 
-        if (!isMountedRef.current) {
+          SHARED_FRAME_CACHE.set(sourceFrameIndex, image);
+          resolve(image);
+        };
+
+        image.onerror = () => {
           resolve(null);
-          return;
-        }
+        };
+      });
 
-        loadedFramesRef.current.set(safeFrame, image);
-        loadedCountRef.current += 1;
-        setLoadProgress(Math.min(1, loadedCountRef.current / FRAME_COUNT));
+      SHARED_FRAME_PROMISES.set(sourceFrameIndex, sharedPromise);
+    }
 
-        if (safeFrame === 0 || safeFrame === LAST_FRAME_INDEX) {
-          drawFrame(currentFrameRef.current);
-        }
+    const loadedFrame = await sharedPromise.finally(() => {
+      SHARED_FRAME_PROMISES.delete(sourceFrameIndex);
+    });
 
-        resolve(image);
-      };
+    const registeredFrame = registerLoadedFrame(safeFrame, loadedFrame);
+    if (registeredFrame && (safeFrame === 0 || safeFrame === LAST_FRAME_INDEX)) {
+      drawFrame(currentFrameRef.current);
+    }
 
-      image.onerror = () => {
-        resolve(null);
-      };
+    return registeredFrame;
+  }
+
+  function startPlayback() {
+    if (!isMountedRef.current || hasPlaybackStartedRef.current) {
+      return;
+    }
+
+    hasPlaybackStartedRef.current = true;
+    setIsReady(true);
+    drawFrame(currentFrameRef.current);
+
+    if (prefersReducedMotion) {
+      finishIntro();
+      return;
+    }
+
+    animationFrameRef.current = window.requestAnimationFrame(animateFrames);
+    introControlsRef.current = animate(introProgress, 1, {
+      duration: INTRO_DURATION_SECONDS,
+      ease: [0.22, 1, 0.36, 1],
     });
   }
 
   useEffect(() => {
     isMountedRef.current = true;
+    hasPlaybackStartedRef.current = false;
     introCompletedRef.current = false;
+    preloadCancelledRef.current = false;
     loadedFramesRef.current = new Map();
-    loadedCountRef.current = 0;
     renderedFrameRef.current = -1;
     currentFrameRef.current = prefersReducedMotion ? LAST_FRAME_INDEX : 0;
     targetFrameRef.current = currentFrameRef.current;
     introProgress.set(0);
-    setLoadProgress(0);
     setIsSettled(false);
     setIsReady(false);
 
+    for (let frame = 0; frame <= LAST_FRAME_INDEX; frame += 1) {
+      const sourceFrameIndex = getSourceFrameIndex(frame);
+      const cachedFrame = SHARED_FRAME_CACHE.get(sourceFrameIndex);
+      if (cachedFrame) {
+        loadedFramesRef.current.set(frame, cachedFrame);
+      }
+    }
+
+    loadedCountRef.current = loadedFramesRef.current.size;
+    lastReportedLoadRef.current = Math.min(1, loadedCountRef.current / FRAME_COUNT);
+    setLoadProgress(lastReportedLoadRef.current);
+
     resizeCanvas();
+    drawFrame(currentFrameRef.current);
 
     const handleResize = () => {
       resizeCanvas();
     };
 
-    const startPlayback = () => {
-      if (!isMountedRef.current) {
+    const maybeStartPlayback = () => {
+      if (hasPlaybackStartedRef.current) {
         return;
       }
 
-      setIsReady(true);
-      setLoadProgress(1);
-      drawFrame(currentFrameRef.current);
+      const readyThreshold = Math.min(FRAME_COUNT, INITIAL_READY_FRAMES);
+      const hasOpeningFrames =
+        loadedFramesRef.current.has(0) && loadedCountRef.current >= readyThreshold;
 
-      if (prefersReducedMotion) {
-        finishIntro();
-        return;
+      if (hasOpeningFrames || loadedCountRef.current === FRAME_COUNT) {
+        startPlayback();
       }
-
-      animationFrameRef.current = window.requestAnimationFrame(animateFrames);
-      introControlsRef.current = animate(introProgress, 1, {
-        duration: INTRO_DURATION_SECONDS,
-        ease: [0.22, 1, 0.36, 1],
-      });
     };
 
     window.addEventListener('resize', handleResize);
 
     if (prefersReducedMotion) {
-      loadFrame(LAST_FRAME_INDEX).then(() => {
+      loadFrame(LAST_FRAME_INDEX, 'high').then(() => {
         currentFrameRef.current = LAST_FRAME_INDEX;
         targetFrameRef.current = LAST_FRAME_INDEX;
         startPlayback();
       });
     } else {
-      Promise.all(
-        Array.from({ length: FRAME_COUNT }, (_, index) => loadFrame(index))
-      ).then(() => {
-        currentFrameRef.current = 0;
-        targetFrameRef.current = 0;
-        startPlayback();
-      });
+      const { queue, prioritySet } = buildLoadQueue();
+      let activeLoads = 0;
+
+      maybeStartPlayback();
+
+      const pumpQueue = () => {
+        if (preloadCancelledRef.current) {
+          return;
+        }
+
+        while (activeLoads < MAX_CONCURRENT_LOADS && queue.length > 0) {
+          const frameIndex = queue.shift();
+          activeLoads += 1;
+          const priority = prioritySet.has(frameIndex) ? 'high' : 'low';
+
+          loadFrame(frameIndex, priority)
+            .catch(() => null)
+            .finally(() => {
+              activeLoads -= 1;
+              maybeStartPlayback();
+
+              if (queue.length === 0 && activeLoads === 0 && !hasPlaybackStartedRef.current) {
+                startPlayback();
+              }
+
+              pumpQueue();
+            });
+        }
+      };
+
+      pumpQueue();
     }
 
     return () => {
       isMountedRef.current = false;
+      preloadCancelledRef.current = true;
       window.removeEventListener('resize', handleResize);
 
       if (animationFrameRef.current) {
