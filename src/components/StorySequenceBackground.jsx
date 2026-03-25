@@ -8,8 +8,8 @@ const LAST_FRAME_INDEX = FRAME_COUNT - 1;
 const FRAME_EASING = 0.18;
 const REDRAW_THRESHOLD = 0.02;
 const INTRO_DURATION_SECONDS = 10;
-const INITIAL_READY_FRAMES = 10;
-const MAX_CONCURRENT_LOADS = 4;
+const INITIAL_READY_FRAMES = 8;
+const MAX_CONCURRENT_LOADS = 5;
 const MAX_CANVAS_DPR = 1.25;
 const LOAD_PROGRESS_STEP = 0.01;
 
@@ -77,6 +77,7 @@ function StorySequenceBackground({ onIntroComplete }) {
   const introCompletedRef = useRef(false);
   const preloadCancelledRef = useRef(false);
   const lastReportedLoadRef = useRef(0);
+  const contiguousLoadedFrameRef = useRef(-1);
   const introCompleteCallbackRef = useRef(onIntroComplete);
   const [isSettled, setIsSettled] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -122,6 +123,15 @@ function StorySequenceBackground({ onIntroComplete }) {
     }
   }
 
+  function updateContiguousLoadedFrame() {
+    while (
+      loadedFramesRef.current.has(contiguousLoadedFrameRef.current + 1) &&
+      contiguousLoadedFrameRef.current < LAST_FRAME_INDEX
+    ) {
+      contiguousLoadedFrameRef.current += 1;
+    }
+  }
+
   function registerLoadedFrame(frameIndex, image) {
     if (!image || !isMountedRef.current) {
       return null;
@@ -131,6 +141,7 @@ function StorySequenceBackground({ onIntroComplete }) {
       loadedFramesRef.current.set(frameIndex, image);
       loadedCountRef.current += 1;
       reportLoadProgress();
+      updateContiguousLoadedFrame();
     }
 
     return image;
@@ -180,18 +191,11 @@ function StorySequenceBackground({ onIntroComplete }) {
     const upperFrameIndex = clampFrame(Math.ceil(safeProgress));
     const mix = safeProgress - lowerFrameIndex;
 
-    let lowerImage = loadedFramesRef.current.get(lowerFrameIndex);
-    let upperImage = loadedFramesRef.current.get(upperFrameIndex);
+    const lowerImage = loadedFramesRef.current.get(lowerFrameIndex);
+    const upperImage = loadedFramesRef.current.get(upperFrameIndex);
+    const fallbackImage = lowerImage || upperImage || findClosestLoadedImage(Math.round(safeProgress));
 
-    if (!lowerImage) {
-      lowerImage = findClosestLoadedImage(lowerFrameIndex);
-    }
-
-    if (!upperImage) {
-      upperImage = findClosestLoadedImage(upperFrameIndex);
-    }
-
-    if (!lowerImage && !upperImage) {
+    if (!fallbackImage) {
       return false;
     }
 
@@ -206,7 +210,7 @@ function StorySequenceBackground({ onIntroComplete }) {
       drawCoverImage(context, lowerImage, canvasWidth, canvasHeight, 1 - mix);
       drawCoverImage(context, upperImage, canvasWidth, canvasHeight, mix);
     } else {
-      drawCoverImage(context, lowerImage || upperImage, canvasWidth, canvasHeight, 1);
+      drawCoverImage(context, fallbackImage, canvasWidth, canvasHeight, 1);
     }
 
     renderedFrameRef.current = safeProgress;
@@ -249,7 +253,9 @@ function StorySequenceBackground({ onIntroComplete }) {
       return;
     }
 
-    targetFrameRef.current = introProgress.get() * LAST_FRAME_INDEX;
+    const desiredTargetFrame = introProgress.get() * LAST_FRAME_INDEX;
+    const maxLoadedTarget = Math.max(0, contiguousLoadedFrameRef.current);
+    targetFrameRef.current = Math.min(desiredTargetFrame, maxLoadedTarget);
 
     const difference = targetFrameRef.current - currentFrameRef.current;
     if (Math.abs(difference) > 0.001) {
@@ -282,6 +288,7 @@ function StorySequenceBackground({ onIntroComplete }) {
 
     const localFrame = loadedFramesRef.current.get(safeFrame);
     if (localFrame) {
+      updateContiguousLoadedFrame();
       return localFrame;
     }
 
@@ -359,6 +366,7 @@ function StorySequenceBackground({ onIntroComplete }) {
     introCompletedRef.current = false;
     preloadCancelledRef.current = false;
     loadedFramesRef.current = new Map();
+    contiguousLoadedFrameRef.current = -1;
     renderedFrameRef.current = -1;
     currentFrameRef.current = prefersReducedMotion ? LAST_FRAME_INDEX : 0;
     targetFrameRef.current = currentFrameRef.current;
@@ -374,6 +382,7 @@ function StorySequenceBackground({ onIntroComplete }) {
       }
     }
 
+    updateContiguousLoadedFrame();
     loadedCountRef.current = loadedFramesRef.current.size;
     lastReportedLoadRef.current = Math.min(1, loadedCountRef.current / FRAME_COUNT);
     setLoadProgress(lastReportedLoadRef.current);
