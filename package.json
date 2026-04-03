@@ -1,19 +1,17 @@
 {
   "name": "my-app",
-  "homepage": "https://Bhanutejanallamothu.github.io/AweTales",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
     "framer-motion": "^12.38.0",
+    "lenis": "^1.3.20",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.2",

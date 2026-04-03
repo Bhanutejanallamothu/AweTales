@@ -2,6 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App.jsx'
+import SmoothScroll from './components/SmoothScroll.jsx'
+
+import 'lenis/dist/lenis.css'
 
 // Import all legacy CSS styles
 import './styles/styles.css'
@@ -23,6 +26,7 @@ const routerBasename =
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter basename={routerBasename}>
+      <SmoothScroll />
       <App />
     </BrowserRouter>
   </React.StrictMode>

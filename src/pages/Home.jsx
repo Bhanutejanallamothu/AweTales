@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import Header from '../components/Header';
@@ -6,6 +6,7 @@ import Footer from '../components/Footer';
 import StorySequenceBackground from '../components/StorySequenceBackground';
 
 function Home() {
+  const [introComplete, setIntroComplete] = useState(false);
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 54,
@@ -18,15 +19,33 @@ function Home() {
   const yText = useTransform(smoothProgress, [0, 1], [0, 220]);
   const opacityText = useTransform(smoothProgress, [0, 0.22], [1, 0.18]);
 
+  useEffect(() => {
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
+
+    if (!introComplete) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    }
+
+    return () => {
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
+    };
+  }, [introComplete]);
+
   return (
     <div className="storybook-home">
-      <StorySequenceBackground scrollYProgress={smoothProgress} />
+      <StorySequenceBackground onIntroComplete={() => setIntroComplete(true)} />
 
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-        className="storybook-home-content"
+        initial={false}
+        animate={introComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: 28 }}
+        transition={{ duration: 0.85, ease: 'easeOut' }}
+        className={`storybook-home-content ${introComplete ? 'is-ready' : 'is-intro-pending'}`}
       >
         <Header />
 
@@ -47,7 +66,7 @@ function Home() {
                 className="magic-badge"
               >
                 <i className="fa-solid fa-sparkles" style={{ color: '#fbbf24' }}></i>{' '}
-                Scroll-Scrubbed Story Reel
+                Cinematic Story Intro
               </motion.div>
 
               <motion.h1
@@ -66,8 +85,8 @@ function Home() {
                 className="hero-subtitle"
               >
                 AweTales transforms your child's bedtime with stories narrated in your own
-                voice, now backed by a smooth cinematic frame sequence that advances like a
-                video as you scroll through the page.
+                voice, opening with a cinematic image sequence and settling into its final
+                frame as the living background behind every moment on the page.
               </motion.p>
 
               <motion.div

@@ -9,9 +9,9 @@ STORY PATH NAVBAR
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(255, 247, 237, 0.95); /* Deep parchment transparent */
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(253, 230, 138, 0.5); /* parchment-dark border */
+    background: transparent;
+    backdrop-filter: none;
+    border-bottom: none;
     transition: all 0.4s ease;
 }
 
@@ -52,6 +52,7 @@ STORY PATH NAVBAR
     display: flex;
     align-items: center;
     gap: 50px;
+    margin-left: auto;
 }
 
 /* Story Timeline Navbar Concept */
