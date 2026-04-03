@@ -13,6 +13,7 @@ import './styles/dashboard.css'
 import './styles/home-magical.css'
 import './styles/components.css'
 import './styles/book-layouts.css'
+import './styles/intro.css'
 
 const routerBasename =
   import.meta.env.BASE_URL === '/'
