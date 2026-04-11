@@ -1,26 +1,143 @@
 .footer {
-  border-top: 1px solid var(--card-border);
-  background: var(--background);
-  padding: 3rem 0;
+  background-color: #0f172a; /* Dark sleek blue representing the screenshot */
+  color: #94a3b8;
+  padding: 4rem 0 0 0;
   margin-top: auto;
+  font-family: 'Outfit', sans-serif;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  text-align: center;
 }
 
-.text {
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.125rem;
-  color: var(--foreground);
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.brandCol {
+  flex: 1 1 300px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.logo {
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.cursive {
+  font-family: 'Great Vibes', 'Brush Script MT', cursive;
+  font-size: 2.5rem;
+  color: #ffffff;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.description {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+}
+
+.socials {
+  display: flex;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.socials a {
+  color: #cbd5e1;
+  transition: color 0.2s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.socials a:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.linksGroup {
+  display: flex;
+  flex: 2 1 500px;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.linkCol {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 120px;
+}
+
+.colTitle {
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.linkCol a {
+  color: #94a3b8;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.linkCol a:hover {
+  color: #ffffff;
+}
+
+.bottomBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .copyright {
   font-size: 0.875rem;
-  color: #a1a1aa;
+  color: #64748b;
+}
+
+.madeWith {
+  font-size: 0.875rem;
+  color: #cbd5e1;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.heart {
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .grid {
+    flex-direction: column;
+  }
+  
+  .linksGroup {
+    flex-direction: column;
+  }
+
+  .bottomBar {
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
 }
