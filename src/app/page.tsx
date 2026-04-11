@@ -2,33 +2,43 @@ import React from 'react';
 import css from './page.module.css';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
+import Intro from '@/components/ui/Intro';
+import ScrollFloat from '@/components/ui/ScrollFloat';
 
 export default function Home() {
   return (
     <div className={css.page}>
-      {/* Cinematic Intro (Lenis Style) */}
-      <section className={css.introSection}>
-        <div className={css.introWrapper}>
-          <h1 className={css.introText}>AWE TALES</h1>
-        </div>
-      </section>
+      <Intro />
 
       {/* Main Hero Overview */}
       <section className={`${css.hero} container flex-center`}>
         <div className={css.heroContent}>
-          <h2 className="form-title animate-fade-in" style={{ fontSize: '3rem', marginBottom: '1.5rem', fontWeight: 700 }}>
-            <span className="text-gradient">Magical Storytelling,</span><br/>
-            In Your Own Voice
-          </h2>
-          <p className={`${css.heroSubtext} animate-fade-in`} style={{ animationDelay: '0.2s' }}>
-            Create personalized bedtime stories that bring you and your child closer—no matter where you are.
-            <br/><br/>
-            Your voice. Their favorite stories. Endless magical moments.
+          <ScrollFloat 
+            animationDuration={1}
+            ease="back.inOut(2)"
+            scrollStart="top bottom+=100%"
+            scrollEnd="bottom bottom-=40%"
+            stagger={0.03}
+            textClassName="text-gradient"
+            containerClassName="form-title animate-fade-in"
+          >
+            Magical Storytelling with Your Voice
+          </ScrollFloat>
+          <p className={`${css.heroSubtext} animate-fade-in`} style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 auto 2rem auto' }}>
+            Create personalized audiobooks that bring you and your child closer together. Your voice, their favorite stories, endless magical moments.
           </p>
           <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <Button size="lg" variant="primary" href="/signup">
-              Start Creating Magic
+              Sign Up
             </Button>
+          </div>
+          
+          <div className={`animate-fade-in ${css.heroMiniFlow}`} style={{ animationDelay: '0.6s', display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem', fontSize: '0.9rem', opacity: 0.8, fontWeight: 500 }}>
+            <span>Record Voice</span>
+            <span>→</span>
+            <span>Choose Story</span>
+            <span>→</span>
+            <span>Share Love</span>
           </div>
         </div>
       </section>
