@@ -1,0 +1,177 @@
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  min-height: 60vh;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+}
+
+.heroSubtext {
+  font-size: 1.25rem;
+  color: #a1a1aa;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.tagline {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--primary);
+  background: rgba(139, 92, 246, 0.1);
+  padding: 1rem 2rem;
+  border-radius: var(--radius-full);
+  display: inline-block;
+  border: 1px solid var(--primary-light);
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+/* Journey Timeline */
+.journeySection {
+  background: rgba(15, 23, 42, 0.3);
+  border-top: 1px solid var(--card-border);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.timeline {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20px;
+  width: 2px;
+  background: var(--card-border);
+}
+
+.timelineItem {
+  display: flex;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.timelineItem:last-child {
+  margin-bottom: 0;
+}
+
+.timelineYear {
+  width: 100px;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: var(--primary);
+  position: relative;
+  z-index: 10;
+  background: var(--background);
+  padding: 0.5rem 0;
+  text-align: right;
+  padding-right: 2rem;
+}
+
+.timelineYear::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -5px;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 12px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--accent);
+}
+
+.timelineContent {
+  flex: 1;
+  background: var(--card-bg);
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--card-border);
+  margin-left: 2rem;
+}
+
+.timelineContent h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.timelineContent p {
+  color: #a1a1aa;
+}
+
+/* Values */
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.valuesGrid h4 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.valuesGrid p {
+  color: #a1a1aa;
+}
+
+/* Quote */
+.quoteCard {
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 800px;
+  width: 100%;
+}
+
+.quote {
+  font-size: 1.5rem;
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: #e2e8f0;
+}
+
+.teamInfo {
+  color: var(--primary);
+  font-weight: 500;
+  font-size: 1.125rem;
+}
+
+@media (max-width: 768px) {
+  .timeline::before {
+    display: none;
+  }
+  .timelineItem {
+    flex-direction: column;
+  }
+  .timelineYear {
+    text-align: left;
+    padding-right: 0;
+    margin-bottom: 1rem;
+    background: transparent;
+  }
+  .timelineYear::after {
+    display: none;
+  }
+  .timelineContent {
+    margin-left: 0;
+  }
+}

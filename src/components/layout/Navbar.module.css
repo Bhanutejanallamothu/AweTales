@@ -1,0 +1,58 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(15, 17, 26, 0.8);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--card-border);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+}
+
+.logo {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--foreground);
+}
+
+.sparkle {
+  font-size: 1.25rem;
+  animation: pulse-glow 3s infinite;
+}
+
+.nav {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+.link {
+  font-weight: 500;
+  color: #a1a1aa;
+}
+
+.link:hover {
+  color: var(--foreground);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

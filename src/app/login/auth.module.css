@@ -1,0 +1,53 @@
+.page {
+  padding: 4rem 1rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.row {
+  display: flex;
+  gap: 1rem;
+}
+
+.row > div {
+  flex: 1;
+}
+
+.formLinks {
+  text-align: right;
+  margin-top: -0.5rem;
+  margin-bottom: 2rem;
+}
+
+.forgotLink {
+  font-size: 0.875rem;
+  color: var(--primary);
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.submitBtn {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.switchMode {
+  text-align: center;
+  font-size: 0.875rem;
+  color: #a1a1aa;
+}
+
+.switchMode a {
+  color: var(--primary);
+  font-weight: 500;
+}
+
+.switchMode a:hover {
+  text-decoration: underline;
+}
