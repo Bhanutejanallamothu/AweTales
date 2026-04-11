@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import { LenisProvider } from "@/components/providers/LenisProvider";
 
 export const metadata: Metadata = {
   title: "AweTales | Magical Storytelling, In Your Own Voice",
@@ -16,11 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Navbar />
-        <main style={{ minHeight: 'calc(100vh - 60px - 200px)' }}>
-          {children}
-        </main>
-        <Footer />
+        <LenisProvider>
+          <Navbar />
+          <main style={{ minHeight: 'calc(100vh - 60px - 200px)' }}>
+            {children}
+          </main>
+          <Footer />
+        </LenisProvider>
       </body>
     </html>
   );

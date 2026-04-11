@@ -4,6 +4,51 @@
   gap: 2rem;
 }
 
+/* Cinematic Intro */
+.introSection {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background-color: var(--background);
+}
+
+.introWrapper {
+  position: sticky;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.introText {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(4rem, 15vw, 15rem);
+  font-weight: 800;
+  line-height: 1;
+  margin: 0;
+  letter-spacing: -0.02em;
+  background: linear-gradient(180deg, var(--foreground) 0%, rgba(226, 232, 240, 0.2) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: introReveal 2s var(--transition-slow) forwards;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+@keyframes introReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Hero */
 .hero {
   min-height: 80vh;

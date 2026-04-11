@@ -6,13 +6,20 @@ import Card from '@/components/ui/Card';
 export default function Home() {
   return (
     <div className={css.page}>
-      {/* Hero Section */}
+      {/* Cinematic Intro (Lenis Style) */}
+      <section className={css.introSection}>
+        <div className={css.introWrapper}>
+          <h1 className={css.introText}>AWE TALES</h1>
+        </div>
+      </section>
+
+      {/* Main Hero Overview */}
       <section className={`${css.hero} container flex-center`}>
         <div className={css.heroContent}>
-          <h1 className="form-title animate-fade-in" style={{ fontSize: '3.5rem', marginBottom: '1.5rem' }}>
+          <h2 className="form-title animate-fade-in" style={{ fontSize: '3rem', marginBottom: '1.5rem', fontWeight: 700 }}>
             <span className="text-gradient">Magical Storytelling,</span><br/>
             In Your Own Voice
-          </h1>
+          </h2>
           <p className={`${css.heroSubtext} animate-fade-in`} style={{ animationDelay: '0.2s' }}>
             Create personalized bedtime stories that bring you and your child closer—no matter where you are.
             <br/><br/>
