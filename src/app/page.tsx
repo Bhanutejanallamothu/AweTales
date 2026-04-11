@@ -22,7 +22,7 @@ export default function Home() {
             textClassName="text-gradient"
             containerClassName="form-title animate-fade-in"
           >
-            Magical Storytelling with Your Voice
+            {`Magical\nStorytelling\nwith Your Voice`}
           </ScrollFloat>
           <p className={`${css.heroSubtext} animate-fade-in`} style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 auto 2rem auto' }}>
             Create personalized audiobooks that bring you and your child closer together. Your voice, their favorite stories, endless magical moments.
