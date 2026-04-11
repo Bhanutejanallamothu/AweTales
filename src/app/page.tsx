@@ -3,7 +3,7 @@ import css from './page.module.css';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
 import Intro from '@/components/ui/Intro';
-import ScrollFloat from '@/components/ui/ScrollFloat';
+import SplitText from '@/components/ui/SplitText';
 
 export default function Home() {
   return (
@@ -13,17 +13,19 @@ export default function Home() {
       {/* Main Hero Overview */}
       <section className={`${css.hero} container flex-center`}>
         <div className={css.heroContent}>
-          <ScrollFloat 
-            animationDuration={1}
-            ease="back.inOut(2)"
-            scrollStart="top bottom+=100%"
-            scrollEnd="bottom bottom-=40%"
-            stagger={0.03}
-            textClassName="text-gradient"
-            containerClassName="form-title animate-fade-in"
-          >
-            {`Magical\nStorytelling\nwith Your Voice`}
-          </ScrollFloat>
+          <SplitText 
+            text={`Magical\nStorytelling\nwith Your Voice`}
+            className="text-white form-title animate-fade-in"
+            delay={50}
+            duration={1.25}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+          />
           <p className={`${css.heroSubtext} animate-fade-in`} style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 auto 2rem auto' }}>
             Create personalized audiobooks that bring you and your child closer together. Your voice, their favorite stories, endless magical moments.
           </p>

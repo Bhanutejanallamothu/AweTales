@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import css from './Intro.module.css';
+import SplitText from '@/components/ui/SplitText';
 
 interface SparkleConfig {
   left: string;
@@ -79,16 +80,26 @@ export default function Intro() {
           </div>
         )}
         
-        <div 
-          className={`
-            ${css.text} 
-            ${text === 'Your Voice...' ? css.phase1 : ''}
-            ${text === 'Becomes a Story...' ? css.phase2 : ''}
-            ${text === 'AweTales' ? css.phase3 : ''}
-            ${scale ? css.scaled : ''}
-          `}
-        >
-          {text} {text === 'AweTales' && <span className={css.finalSparkle}>✨</span>}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <SplitText
+            key={text}
+            text={text}
+            tag="span"
+            className={`
+              ${css.text} 
+              ${text === 'Your Voice...' ? css.phase1 : ''}
+              ${text === 'Becomes a Story...' ? css.phase2 : ''}
+              ${text === 'AweTales' ? css.phase3 : ''}
+              ${scale ? css.scaled : ''}
+            `}
+            delay={50}
+            duration={1.25}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+          />
+          {text === 'AweTales' && <span className={`${css.text} ${css.finalSparkle}`} style={{ marginLeft: '0.5rem' }}>✨</span>}
         </div>
       </div>
     </div>
