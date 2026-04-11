@@ -56,3 +56,25 @@
   align-items: center;
   gap: 1rem;
 }
+
+.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.logoHidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.logoVisible {
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
+}
