@@ -70,8 +70,9 @@
 /* Hero */
 .hero {
   min-height: 80vh;
-  text-align: center;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .hero::before {
@@ -89,6 +90,19 @@
 
 .heroContent {
   max-width: 800px;
+}
+
+.heroLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.92fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+  width: 100%;
+}
+
+.heroBearColumn {
+  display: flex;
+  justify-content: center;
 }
 
 .heroSubtext {
@@ -126,7 +140,11 @@
 }
 
 .stepIcon {
-  font-size: 3rem;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fef3c7;
   margin-bottom: 1rem;
 }
 
@@ -245,6 +263,14 @@
 }
 
 @media (max-width: 768px) {
+  .heroLayout {
+    grid-template-columns: 1fr;
+  }
+
+  .heroBearColumn {
+    order: -1;
+  }
+
   .heroContent h1 {
     font-size: 2.5rem !important;
   }

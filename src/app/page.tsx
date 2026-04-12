@@ -2,6 +2,7 @@ import React from 'react';
 import css from './page.module.css';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
+import HomeStoryBear from '@/components/ui/HomeStoryBear';
 import Intro from '@/components/ui/Intro';
 import SplitText from '@/components/ui/SplitText';
 
@@ -10,42 +11,62 @@ export default function Home() {
     <div className={css.page}>
       <Intro />
 
-      {/* Main Hero Overview */}
-      <section className={`${css.hero} container flex-center`}>
-        <div className={css.heroContent}>
-          <SplitText 
-            text={`Magical\nStorytelling\nwith Your Voice`}
-            className="text-white form-title animate-fade-in"
-            delay={50}
-            duration={1.25}
-            ease="power3.out"
-            splitType="chars"
-            from={{ opacity: 0, y: 40 }}
-            to={{ opacity: 1, y: 0 }}
-            threshold={0.1}
-            rootMargin="-100px"
-            textAlign="center"
-          />
-          <p className={`${css.heroSubtext} animate-fade-in`} style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 auto 2rem auto' }}>
-            Create personalized audiobooks that bring you and your child closer together. Your voice, their favorite stories, endless magical moments.
-          </p>
-          <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-            <Button size="lg" variant="primary" href="/signup">
-              Sign Up
-            </Button>
+      <section className={`${css.hero} container`}>
+        <div className={css.heroLayout}>
+          <div className={css.heroContent}>
+            <SplitText
+              text={`Magical\nStorytelling\nwith Your Voice`}
+              className="text-white form-title animate-fade-in"
+              delay={50}
+              duration={1.25}
+              ease="power3.out"
+              splitType="chars"
+              from={{ opacity: 0, y: 40 }}
+              to={{ opacity: 1, y: 0 }}
+              threshold={0.1}
+              rootMargin="-100px"
+              textAlign="center"
+            />
+            <p
+              className={`${css.heroSubtext} animate-fade-in`}
+              style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 auto 2rem auto' }}
+            >
+              Create personalized audiobooks that bring you and your child closer together. Your voice, their
+              favorite stories, endless magical moments.
+            </p>
+            <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
+              <Button size="lg" variant="primary" href="/signup">
+                Sign Up
+              </Button>
+            </div>
+
+            <div
+              className={`animate-fade-in ${css.heroMiniFlow}`}
+              style={{
+                animationDelay: '0.6s',
+                display: 'flex',
+                gap: '1rem',
+                justifyContent: 'center',
+                marginTop: '2rem',
+                fontSize: '0.9rem',
+                opacity: 0.8,
+                fontWeight: 500,
+              }}
+            >
+              <span>Record Voice</span>
+              <span>-&gt;</span>
+              <span>Choose Story</span>
+              <span>-&gt;</span>
+              <span>Share Love</span>
+            </div>
           </div>
-          
-          <div className={`animate-fade-in ${css.heroMiniFlow}`} style={{ animationDelay: '0.6s', display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '2rem', fontSize: '0.9rem', opacity: 0.8, fontWeight: 500 }}>
-            <span>Record Voice</span>
-            <span>→</span>
-            <span>Choose Story</span>
-            <span>→</span>
-            <span>Share Love</span>
+
+          <div className={css.heroBearColumn}>
+            <HomeStoryBear />
           </div>
         </div>
       </section>
 
-      {/* Quick Flow & How It Works */}
       <section className="section container">
         <div className={css.sectionHeader}>
           <h2 className="text-gradient-gold">How It Works</h2>
@@ -53,49 +74,49 @@ export default function Home() {
         </div>
         <div className={css.stepsGrid}>
           <Card hoverable glow className={css.stepCard}>
-            <div className={css.stepIcon}>🎙️</div>
+            <div className={css.stepIcon}>Mic</div>
             <h3>1. Record Voice</h3>
             <p>Upload a short sample and let AI learn your unique tone and storytelling style.</p>
           </Card>
           <Card hoverable glow className={css.stepCard}>
-            <div className={css.stepIcon}>📚</div>
+            <div className={css.stepIcon}>Books</div>
             <h3>2. Choose Story</h3>
             <p>Pick from a library of magical tales, adventures, and bedtime classics.</p>
           </Card>
           <Card hoverable glow className={css.stepCard}>
-            <div className={css.stepIcon}>💖</div>
+            <div className={css.stepIcon}>Love</div>
             <h3>3. Share Love</h3>
-            <p>Let your child hear your voice anytime—even when you&apos;re away.</p>
+            <p>Let your child hear your voice anytime, even when you&apos;re away.</p>
           </Card>
         </div>
       </section>
 
-      {/* Emotional Section */}
       <section className={css.emotionalSection}>
         <div className="container flex-center">
           <div className={css.emotionalContent}>
-            <h2>Your Voice. Their Dreams. <span className="text-gradient">Forever.</span></h2>
+            <h2>
+              Your Voice. Their Dreams. <span className="text-gradient">Forever.</span>
+            </h2>
             <p>
-              Turn everyday bedtime into unforgettable moments. 
-              Create stories narrated in your own voice and stay connected with your child—even when you&apos;re apart.
+              Turn everyday bedtime into unforgettable moments. Create stories narrated in your own voice and stay
+              connected with your child even when you&apos;re apart.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="section container">
         <div className={css.sectionHeader}>
           <h2>Why AweTales?</h2>
         </div>
         <div className={css.featuresGrid}>
           {[
-            { title: 'Deeper Emotional Bonds', desc: 'Your voice turns every story into a cherished memory.', icon: '❤️' },
-            { title: 'Powered by AI', desc: 'Captures tone, warmth, and emotional nuance of your voice.', icon: '🧠' },
-            { title: 'Always Available', desc: 'Your voice is there even when you are busy or traveling.', icon: '🌍' },
-            { title: 'Personalized Stories', desc: 'Add child name, characters, and details.', icon: '✨' },
-            { title: 'Learning Enhanced', desc: 'Improves comprehension through familiar voice.', icon: '📈' },
-            { title: 'Safe & Secure', desc: 'Encrypted voice data. Privacy first.', icon: '🔒' }
+            { title: 'Deeper Emotional Bonds', desc: 'Your voice turns every story into a cherished memory.', icon: 'Heart' },
+            { title: 'Powered by AI', desc: 'Captures tone, warmth, and emotional nuance of your voice.', icon: 'Mind' },
+            { title: 'Always Available', desc: 'Your voice is there even when you are busy or traveling.', icon: 'Globe' },
+            { title: 'Personalized Stories', desc: 'Add child name, characters, and details.', icon: 'Spark' },
+            { title: 'Learning Enhanced', desc: 'Improves comprehension through familiar voice.', icon: 'Grow' },
+            { title: 'Safe & Secure', desc: 'Encrypted voice data. Privacy first.', icon: 'Lock' },
           ].map((feat, i) => (
             <div key={i} className={css.featureItem}>
               <div className={css.featureIcon}>{feat.icon}</div>
@@ -106,7 +127,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className={`section ${css.testimonialsSection}`}>
         <div className="container">
           <div className={css.sectionHeader}>
@@ -129,7 +149,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Final CTA */}
       <section className="section container flex-center">
         <Card glow className={css.ctaCard}>
           <h2>Ready to Create Your First Magical Story?</h2>
