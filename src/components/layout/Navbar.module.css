@@ -25,7 +25,9 @@
   transition-delay: 0.5s;
 }
 
-:global(body[data-intro-phase]) .brandWordmark {
+:global(body[data-intro-phase='intro']) .brandWordmark,
+:global(body[data-intro-phase='holding']) .brandWordmark,
+:global(body[data-intro-phase='moving']) .brandWordmark {
   opacity: 0;
 }
 
@@ -55,7 +57,7 @@
 .brandWordmark {
   font-family: 'Outfit', sans-serif;
   font-size: 1.7rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: -0.05em;
   color: #0f172a;
   text-shadow: none;

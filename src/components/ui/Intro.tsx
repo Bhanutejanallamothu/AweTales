@@ -29,6 +29,7 @@ export default function Intro() {
   const [sparkles, setSparkles] = useState<SparkleConfig[]>([]);
   const [motion, setMotion] = useState<MotionState>({ x: 0, y: 0, scale: 1 });
   const motionRef = useRef<HTMLSpanElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
@@ -158,6 +159,7 @@ export default function Intro() {
           />
         ) : (
           <div
+            ref={trackRef}
             className={`${css.motionTrack} ${moving ? css.motionTrackMoving : ''}`}
             style={
               {
