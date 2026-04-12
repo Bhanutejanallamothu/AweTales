@@ -16,7 +16,7 @@ const STORY_SCENES: StoryScene[] = [
   {
     id: 'welcome',
     label: 'Welcome',
-    text: "I’m following along. Scroll with me and I’ll keep your story company all the way down the page.",
+    text: "I'm following along. Scroll with me and I'll keep your story company all the way down the page.",
     emotion: 'wave',
   },
   {
@@ -55,6 +55,11 @@ export default function HomeStoryBear() {
   const [activeSceneId, setActiveSceneId] = useState<string>(STORY_SCENES[0].id);
   const dockRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<HTMLElement[]>([]);
+  const wheelLockRef = useRef(false);
+  const wheelDeltaRef = useRef(0);
+  const wheelResetTimerRef = useRef<number | null>(null);
+  const wheelUnlockTimerRef = useRef<number | null>(null);
   const deferredSceneId = useDeferredValue(activeSceneId);
   const activeScene = STORY_SCENES.find((scene) => scene.id === deferredSceneId) ?? STORY_SCENES[0];
   const activeSceneIndex = STORY_SCENES.findIndex((scene) => scene.id === activeSceneId);
@@ -65,13 +70,60 @@ export default function HomeStoryBear() {
     });
   });
 
+  const scrollToScene = useEffectEvent((sceneId: string) => {
+    const section = document.querySelector<HTMLElement>(`[data-bear-scene="${sceneId}"]`);
+
+    if (section) {
+      setScene(sceneId);
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  const snapToIndex = useEffectEvent((index: number) => {
+    const nextIndex = Math.max(0, Math.min(index, STORY_SCENES.length - 1));
+    const nextScene = STORY_SCENES[nextIndex];
+    const nextSection = sectionRefs.current[nextIndex];
+
+    if (!nextScene || !nextSection) {
+      return;
+    }
+
+    wheelLockRef.current = true;
+    wheelDeltaRef.current = 0;
+
+    if (wheelResetTimerRef.current) {
+      window.clearTimeout(wheelResetTimerRef.current);
+      wheelResetTimerRef.current = null;
+    }
+
+    if (wheelUnlockTimerRef.current) {
+      window.clearTimeout(wheelUnlockTimerRef.current);
+    }
+
+    setScene(nextScene.id);
+    nextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    wheelUnlockTimerRef.current = window.setTimeout(() => {
+      wheelLockRef.current = false;
+    }, 900);
+  });
+
   const advanceScene = useEffectEvent(() => {
     const nextScene = STORY_SCENES[(activeSceneIndex + 1) % STORY_SCENES.length];
-    setScene(nextScene.id);
+    scrollToScene(nextScene.id);
   });
 
   useEffect(() => {
+    document.documentElement.setAttribute('data-home-scroll', 'true');
+
+    return () => {
+      document.documentElement.removeAttribute('data-home-scroll');
+    };
+  }, []);
+
+  useEffect(() => {
     const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-bear-scene]'));
+    sectionRefs.current = sections;
 
     if (!sections.length) {
       return undefined;
@@ -90,8 +142,8 @@ export default function HomeStoryBear() {
         }
       },
       {
-        threshold: [0.2, 0.42, 0.6],
-        rootMargin: '-18% 0px -24% 0px',
+        threshold: [0.22, 0.45, 0.68],
+        rootMargin: '-12% 0px -18% 0px',
       }
     );
 
@@ -99,8 +151,70 @@ export default function HomeStoryBear() {
 
     return () => {
       observer.disconnect();
+      sectionRefs.current = [];
     };
   }, [setScene]);
+
+  useEffect(() => {
+    const handleWheel = (event: WheelEvent) => {
+      if (event.ctrlKey || window.innerWidth <= 900 || !sectionRefs.current.length) {
+        return;
+      }
+
+      const target = event.target as HTMLElement | null;
+
+      if (target?.closest('input, textarea, select, [contenteditable="true"]')) {
+        return;
+      }
+
+      if (Math.abs(event.deltaY) < 4) {
+        return;
+      }
+
+      event.preventDefault();
+
+      if (wheelLockRef.current) {
+        return;
+      }
+
+      if (wheelDeltaRef.current !== 0 && Math.sign(wheelDeltaRef.current) !== Math.sign(event.deltaY)) {
+        wheelDeltaRef.current = 0;
+      }
+
+      wheelDeltaRef.current += event.deltaY;
+
+      if (wheelResetTimerRef.current) {
+        window.clearTimeout(wheelResetTimerRef.current);
+      }
+
+      wheelResetTimerRef.current = window.setTimeout(() => {
+        wheelDeltaRef.current = 0;
+      }, 140);
+
+      if (Math.abs(wheelDeltaRef.current) < 40) {
+        return;
+      }
+
+      const direction = wheelDeltaRef.current > 0 ? 1 : -1;
+      snapToIndex(activeSceneIndex + direction);
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+
+      if (wheelResetTimerRef.current) {
+        window.clearTimeout(wheelResetTimerRef.current);
+        wheelResetTimerRef.current = null;
+      }
+
+      if (wheelUnlockTimerRef.current) {
+        window.clearTimeout(wheelUnlockTimerRef.current);
+        wheelUnlockTimerRef.current = null;
+      }
+    };
+  }, [activeSceneIndex, snapToIndex]);
 
   useEffect(() => {
     let rafId = 0;
@@ -160,33 +274,51 @@ export default function HomeStoryBear() {
   }, []);
 
   return (
-    <div className={css.dockWrap}>
-      <div ref={dockRef} className={css.dock}>
-        <div ref={glowRef} className={css.orbitGlow} aria-hidden="true" />
+    <>
+      <nav className={css.checkpointRail} aria-label="Home sections">
+        {STORY_SCENES.map((scene, index) => (
+          <button
+            key={scene.id}
+            type="button"
+            className={`${css.checkpointButton} ${scene.id === activeScene.id ? css.checkpointButtonActive : ''}`}
+            onClick={() => scrollToScene(scene.id)}
+            aria-label={`Go to ${scene.label}`}
+            aria-current={scene.id === activeScene.id ? 'true' : undefined}
+          >
+            <span className={css.checkpointDot}>{index + 1}</span>
+            <span className={css.checkpointLabel}>{scene.label}</span>
+          </button>
+        ))}
+      </nav>
 
-        <div className={css.interactionLayer}>
-          <InteractiveBear
-            emotion={activeScene.emotion}
-            storyText={activeScene.text}
-            interactive
-            onAdvance={advanceScene}
-            hint={`Tap to preview ${STORY_SCENES[(activeSceneIndex + 1) % STORY_SCENES.length].label}`}
-          />
-        </div>
+      <div className={css.dockWrap}>
+        <div ref={dockRef} className={css.dock}>
+          <div ref={glowRef} className={css.orbitGlow} aria-hidden="true" />
 
-        <div className={css.metaCard}>
-          <p className={css.kicker}>Story Companion</p>
-          <p className={css.sceneLabel}>{activeScene.label}</p>
-          <div className={css.progressDots} aria-hidden="true">
-            {STORY_SCENES.map((scene) => (
-              <span
-                key={scene.id}
-                className={`${css.progressDot} ${scene.id === activeScene.id ? css.progressDotActive : ''}`}
-              />
-            ))}
+          <div className={css.interactionLayer}>
+            <InteractiveBear
+              emotion={activeScene.emotion}
+              storyText={activeScene.text}
+              interactive
+              onAdvance={advanceScene}
+              hint={`Tap to preview ${STORY_SCENES[(activeSceneIndex + 1) % STORY_SCENES.length].label}`}
+            />
+          </div>
+
+          <div className={css.metaCard}>
+            <p className={css.kicker}>Story Companion</p>
+            <p className={css.sceneLabel}>{activeScene.label}</p>
+            <div className={css.progressDots} aria-hidden="true">
+              {STORY_SCENES.map((scene) => (
+                <span
+                  key={scene.id}
+                  className={`${css.progressDot} ${scene.id === activeScene.id ? css.progressDotActive : ''}`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

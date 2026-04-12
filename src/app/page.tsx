@@ -12,7 +12,7 @@ export default function Home() {
       <Intro />
       <HomeStoryBear />
 
-      <section className={`${css.hero} container flex-center`} data-bear-scene="welcome">
+      <section className={`${css.hero} ${css.snapSection} container flex-center`} data-bear-scene="welcome">
         <div className={css.heroContent}>
           <SplitText
             text={`Magical\nStorytelling\nwith Your Voice`}
@@ -62,7 +62,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section container" data-bear-scene="steps">
+      <section className={`${css.snapSection} container`} data-bear-scene="steps">
         <div className={css.sectionHeader}>
           <h2 className="text-gradient-gold">How It Works</h2>
           <p>Just 3 simple steps to create magical storytelling experiences</p>
@@ -86,7 +86,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={css.emotionalSection} data-bear-scene="dreams">
+      <section className={`${css.snapSection} ${css.emotionalSection}`} data-bear-scene="dreams">
         <div className="container flex-center">
           <div className={css.emotionalContent}>
             <h2>
@@ -100,7 +100,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section container" data-bear-scene="features">
+      <section className={`${css.snapSection} container`} data-bear-scene="features">
         <div className={css.sectionHeader}>
           <h2>Why AweTales?</h2>
         </div>
@@ -122,7 +122,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`section ${css.testimonialsSection}`} data-bear-scene="love">
+      <section className={`${css.snapSection} ${css.testimonialsSection}`} data-bear-scene="love">
         <div className="container">
           <div className={css.sectionHeader}>
             <h2 className="text-gradient-gold">Families Love AweTales</h2>
@@ -144,7 +144,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section container flex-center" data-bear-scene="cta">
+      <section className={`${css.snapSection} container flex-center`} data-bear-scene="cta">
         <Card glow className={css.ctaCard}>
           <h2>Ready to Create Your First Magical Story?</h2>
           <p>Join thousands of families creating meaningful bedtime moments.</p>
