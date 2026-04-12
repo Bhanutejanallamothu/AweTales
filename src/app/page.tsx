@@ -10,64 +10,59 @@ export default function Home() {
   return (
     <div className={css.page}>
       <Intro />
+      <HomeStoryBear />
 
-      <section className={`${css.hero} container`}>
-        <div className={css.heroLayout}>
-          <div className={css.heroContent}>
-            <SplitText
-              text={`Magical\nStorytelling\nwith Your Voice`}
-              className="text-white form-title animate-fade-in"
-              delay={50}
-              duration={1.25}
-              ease="power3.out"
-              splitType="chars"
-              from={{ opacity: 0, y: 40 }}
-              to={{ opacity: 1, y: 0 }}
-              threshold={0.1}
-              rootMargin="-100px"
-              textAlign="center"
-            />
-            <p
-              className={`${css.heroSubtext} animate-fade-in`}
-              style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 auto 2rem auto' }}
-            >
-              Create personalized audiobooks that bring you and your child closer together. Your voice, their
-              favorite stories, endless magical moments.
-            </p>
-            <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-              <Button size="lg" variant="primary" href="/signup">
-                Sign Up
-              </Button>
-            </div>
-
-            <div
-              className={`animate-fade-in ${css.heroMiniFlow}`}
-              style={{
-                animationDelay: '0.6s',
-                display: 'flex',
-                gap: '1rem',
-                justifyContent: 'center',
-                marginTop: '2rem',
-                fontSize: '0.9rem',
-                opacity: 0.8,
-                fontWeight: 500,
-              }}
-            >
-              <span>Record Voice</span>
-              <span>-&gt;</span>
-              <span>Choose Story</span>
-              <span>-&gt;</span>
-              <span>Share Love</span>
-            </div>
+      <section className={`${css.hero} container flex-center`} data-bear-scene="welcome">
+        <div className={css.heroContent}>
+          <SplitText
+            text={`Magical\nStorytelling\nwith Your Voice`}
+            className="text-white form-title animate-fade-in"
+            delay={50}
+            duration={1.25}
+            ease="power3.out"
+            splitType="chars"
+            from={{ opacity: 0, y: 40 }}
+            to={{ opacity: 1, y: 0 }}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+          />
+          <p
+            className={`${css.heroSubtext} animate-fade-in`}
+            style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 auto 2rem auto' }}
+          >
+            Create personalized audiobooks that bring you and your child closer together. Your voice, their favorite
+            stories, endless magical moments.
+          </p>
+          <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            <Button size="lg" variant="primary" href="/signup">
+              Sign Up
+            </Button>
           </div>
 
-          <div className={css.heroBearColumn}>
-            <HomeStoryBear />
+          <div
+            className={`animate-fade-in ${css.heroMiniFlow}`}
+            style={{
+              animationDelay: '0.6s',
+              display: 'flex',
+              gap: '1rem',
+              justifyContent: 'center',
+              marginTop: '2rem',
+              fontSize: '0.9rem',
+              opacity: 0.8,
+              fontWeight: 500,
+            }}
+          >
+            <span>Record Voice</span>
+            <span>-&gt;</span>
+            <span>Choose Story</span>
+            <span>-&gt;</span>
+            <span>Share Love</span>
           </div>
         </div>
       </section>
 
-      <section className="section container">
+      <section className="section container" data-bear-scene="steps">
         <div className={css.sectionHeader}>
           <h2 className="text-gradient-gold">How It Works</h2>
           <p>Just 3 simple steps to create magical storytelling experiences</p>
@@ -91,7 +86,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={css.emotionalSection}>
+      <section className={css.emotionalSection} data-bear-scene="dreams">
         <div className="container flex-center">
           <div className={css.emotionalContent}>
             <h2>
@@ -105,7 +100,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section container">
+      <section className="section container" data-bear-scene="features">
         <div className={css.sectionHeader}>
           <h2>Why AweTales?</h2>
         </div>
@@ -127,7 +122,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`section ${css.testimonialsSection}`}>
+      <section className={`section ${css.testimonialsSection}`} data-bear-scene="love">
         <div className="container">
           <div className={css.sectionHeader}>
             <h2 className="text-gradient-gold">Families Love AweTales</h2>
@@ -149,7 +144,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section container flex-center">
+      <section className="section container flex-center" data-bear-scene="cta">
         <Card glow className={css.ctaCard}>
           <h2>Ready to Create Your First Magical Story?</h2>
           <p>Join thousands of families creating meaningful bedtime moments.</p>

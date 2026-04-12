@@ -1,91 +1,190 @@
 'use client';
 
-import { startTransition, useEffect, useEffectEvent, useState } from 'react';
+import { startTransition, useDeferredValue, useEffect, useEffectEvent, useRef, useState } from 'react';
+import gsap from 'gsap';
 import InteractiveBear, { type BearEmotion } from '@/components/ui/InteractiveBear';
 import css from './HomeStoryBear.module.css';
 
-interface DialogueLine {
+interface StoryScene {
+  id: string;
   label: string;
   text: string;
   emotion: BearEmotion;
 }
 
-const HOME_DIALOGUES: DialogueLine[] = [
+const STORY_SCENES: StoryScene[] = [
   {
-    label: 'Hello',
-    text: "Hi there. I'm the AweTales bear, and I love welcoming new little dreamers.",
+    id: 'welcome',
+    label: 'Welcome',
+    text: "I’m following along. Scroll with me and I’ll keep your story company all the way down the page.",
     emotion: 'wave',
   },
   {
-    label: 'Talk',
-    text: 'When I tell a story, I wiggle and chatter so every word feels alive.',
+    id: 'steps',
+    label: 'How It Works',
+    text: 'This is where I perk up and explain the simple magic: voice in, story out, bedtime glow everywhere.',
     emotion: 'talking',
   },
   {
-    label: 'Magic',
-    text: 'The moment the magic starts, I bounce like I just found the best bedtime adventure ever.',
+    id: 'dreams',
+    label: 'Dreams',
+    text: 'Here the mood gets softer, so I sway gently and settle into a warm bedtime rhythm.',
+    emotion: 'nod',
+  },
+  {
+    id: 'features',
+    label: 'Why AweTales',
+    text: 'These are the big delights, so I bounce a little brighter when you reach this part.',
     emotion: 'jump',
   },
   {
-    label: 'Goodnight',
-    text: 'And when the story turns gentle, I slow down and nod softly with the rhythm of the tale.',
-    emotion: 'nod',
+    id: 'love',
+    label: 'Families Love It',
+    text: 'When the happy reviews appear, I wave because this is the part where the heart shows up.',
+    emotion: 'wave',
+  },
+  {
+    id: 'cta',
+    label: 'Ready',
+    text: 'You made it to the ending. Tap me if you want a little extra encouragement before you begin.',
+    emotion: 'talking',
   },
 ];
 
 export default function HomeStoryBear() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeDialogue = HOME_DIALOGUES[activeIndex];
+  const [activeSceneId, setActiveSceneId] = useState<string>(STORY_SCENES[0].id);
+  const dockRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const deferredSceneId = useDeferredValue(activeSceneId);
+  const activeScene = STORY_SCENES.find((scene) => scene.id === deferredSceneId) ?? STORY_SCENES[0];
+  const activeSceneIndex = STORY_SCENES.findIndex((scene) => scene.id === activeSceneId);
 
-  const goToIndex = (index: number) => {
+  const setScene = useEffectEvent((sceneId: string) => {
     startTransition(() => {
-      setActiveIndex(index);
-    });
-  };
-
-  const advanceDialogue = useEffectEvent(() => {
-    startTransition(() => {
-      setActiveIndex((current) => (current + 1) % HOME_DIALOGUES.length);
+      setActiveSceneId((current) => (current === sceneId ? current : sceneId));
     });
   });
 
-  useEffect(() => {
-    const timer = window.setTimeout(() => {
-      advanceDialogue();
-    }, 4300);
+  const advanceScene = useEffectEvent(() => {
+    const nextScene = STORY_SCENES[(activeSceneIndex + 1) % STORY_SCENES.length];
+    setScene(nextScene.id);
+  });
 
-    return () => window.clearTimeout(timer);
-  }, [activeIndex, advanceDialogue]);
+  useEffect(() => {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>('[data-bear-scene]'));
+
+    if (!sections.length) {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleEntries = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((first, second) => second.intersectionRatio - first.intersectionRatio);
+
+        const nextSceneId = visibleEntries[0]?.target.getAttribute('data-bear-scene');
+
+        if (nextSceneId) {
+          setScene(nextSceneId);
+        }
+      },
+      {
+        threshold: [0.2, 0.42, 0.6],
+        rootMargin: '-18% 0px -24% 0px',
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [setScene]);
+
+  useEffect(() => {
+    let rafId = 0;
+
+    const updateParallax = () => {
+      rafId = 0;
+
+      const scrollY = window.scrollY;
+      const scrollLimit = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const progress = scrollY / scrollLimit;
+      const driftY = Math.sin(scrollY * 0.008) * 16 - progress * 18;
+      const driftX = Math.cos(scrollY * 0.0045) * 10;
+      const rotation = Math.sin(scrollY * 0.0055) * 2.5;
+
+      if (dockRef.current) {
+        gsap.to(dockRef.current, {
+          x: driftX,
+          y: driftY,
+          rotate: rotation,
+          duration: 0.65,
+          ease: 'power2.out',
+          overwrite: true,
+        });
+      }
+
+      if (glowRef.current) {
+        gsap.to(glowRef.current, {
+          x: Math.sin(scrollY * 0.0035) * 14,
+          y: Math.cos(scrollY * 0.004) * 8,
+          scale: 1 + progress * 0.18,
+          opacity: 0.48 + Math.sin(scrollY * 0.003) * 0.08,
+          duration: 0.8,
+          ease: 'sine.out',
+          overwrite: true,
+        });
+      }
+    };
+
+    const requestParallax = () => {
+      if (!rafId) {
+        rafId = window.requestAnimationFrame(updateParallax);
+      }
+    };
+
+    requestParallax();
+    window.addEventListener('scroll', requestParallax, { passive: true });
+    window.addEventListener('resize', requestParallax);
+
+    return () => {
+      window.removeEventListener('scroll', requestParallax);
+      window.removeEventListener('resize', requestParallax);
+
+      if (rafId) {
+        window.cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
 
   return (
-    <div className={css.wrapper}>
-      <div className={css.stage}>
-        <div className={css.stageGlow} aria-hidden="true" />
-        <InteractiveBear
-          emotion={activeDialogue.emotion}
-          storyText={activeDialogue.text}
-          interactive
-          onAdvance={advanceDialogue}
-          hint="Tap the bear to hear the next line"
-        />
-      </div>
+    <div className={css.dockWrap}>
+      <div ref={dockRef} className={css.dock}>
+        <div ref={glowRef} className={css.orbitGlow} aria-hidden="true" />
 
-      <div className={css.controls}>
-        <p className={css.kicker}>Interactive Story Bear</p>
-        <p className={css.caption}>Each dialogue line triggers its own motion. Tap the bear or choose a moment below.</p>
+        <div className={css.interactionLayer}>
+          <InteractiveBear
+            emotion={activeScene.emotion}
+            storyText={activeScene.text}
+            interactive
+            onAdvance={advanceScene}
+            hint={`Tap to preview ${STORY_SCENES[(activeSceneIndex + 1) % STORY_SCENES.length].label}`}
+          />
+        </div>
 
-        <div className={css.buttonRow}>
-          {HOME_DIALOGUES.map((dialogue, index) => (
-            <button
-              key={dialogue.label}
-              type="button"
-              className={`${css.controlButton} ${index === activeIndex ? css.controlButtonActive : ''}`}
-              onClick={() => goToIndex(index)}
-              aria-pressed={index === activeIndex}
-            >
-              {dialogue.label}
-            </button>
-          ))}
+        <div className={css.metaCard}>
+          <p className={css.kicker}>Story Companion</p>
+          <p className={css.sceneLabel}>{activeScene.label}</p>
+          <div className={css.progressDots} aria-hidden="true">
+            {STORY_SCENES.map((scene) => (
+              <span
+                key={scene.id}
+                className={`${css.progressDot} ${scene.id === activeScene.id ? css.progressDotActive : ''}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

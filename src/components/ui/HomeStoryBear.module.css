@@ -1,94 +1,119 @@
-.wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.25rem;
-  width: 100%;
+.dockWrap {
+  position: fixed;
+  right: max(0.85rem, calc((100vw - 1200px) / 2));
+  bottom: 1rem;
+  z-index: 38;
+  pointer-events: none;
 }
 
-.stage {
+.dock {
   position: relative;
-  width: 100%;
-  min-height: 34rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem 0;
-  isolation: isolate;
+  width: clamp(14rem, 19vw, 18rem);
+  transform-origin: bottom right;
 }
 
-.stageGlow {
+.orbitGlow {
   position: absolute;
-  inset: auto 10% 8% 10%;
-  height: 12rem;
+  inset: auto -10% 8% -10%;
+  height: 8rem;
   border-radius: 999px;
   background:
-    radial-gradient(circle at 30% 50%, rgba(255, 214, 102, 0.28), transparent 40%),
-    radial-gradient(circle at 70% 50%, rgba(94, 234, 212, 0.2), transparent 42%),
-    radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.18), transparent 62%);
-  filter: blur(24px);
+    radial-gradient(circle at 20% 50%, rgba(255, 214, 102, 0.26), transparent 42%),
+    radial-gradient(circle at 75% 45%, rgba(94, 234, 212, 0.22), transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.18), transparent 65%);
+  filter: blur(20px);
+  opacity: 0.52;
   z-index: -1;
 }
 
-.controls {
-  width: min(100%, 34rem);
-  text-align: center;
+.interactionLayer {
+  pointer-events: auto;
+}
+
+.metaCard {
+  margin-top: 0.35rem;
+  margin-left: auto;
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.22);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  pointer-events: none;
 }
 
 .kicker {
-  margin: 0 0 0.45rem;
+  margin: 0;
   color: #5eead4;
-  font-size: 0.8rem;
+  font-size: 0.68rem;
   font-weight: 800;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
 
-.caption {
-  margin: 0;
-  color: #cbd5e1;
-  font-size: 0.98rem;
-  line-height: 1.6;
-}
-
-.buttonRow {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 1rem;
-}
-
-.controlButton {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 6.5rem;
-  padding: 0.7rem 1rem;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(15, 23, 42, 0.48);
-  color: #e2e8f0;
-  font-size: 0.92rem;
+.sceneLabel {
+  margin: 0.15rem 0 0;
+  color: #f8fafc;
+  font-size: 0.9rem;
   font-weight: 700;
-  transition: transform var(--transition-fast), background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 }
 
-.controlButton:hover {
-  transform: translateY(-1px);
-  border-color: rgba(94, 234, 212, 0.55);
-  color: #ffffff;
+.progressDots {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
 }
 
-.controlButtonActive {
-  background: rgba(15, 118, 110, 0.78);
-  border-color: rgba(94, 234, 212, 0.68);
-  color: #ffffff;
-  box-shadow: 0 12px 28px rgba(15, 118, 110, 0.18);
+.progressDot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.32);
 }
 
-@media (max-width: 768px) {
-  .stage {
-    min-height: 28rem;
+.progressDotActive {
+  background: #5eead4;
+  box-shadow: 0 0 0 4px rgba(94, 234, 212, 0.12);
+}
+
+@media (max-width: 1100px) {
+  .dockWrap {
+    right: 0.8rem;
+  }
+
+  .dock {
+    width: clamp(12.5rem, 21vw, 15rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .dockWrap {
+    right: 0.55rem;
+    bottom: 0.7rem;
+  }
+
+  .dock {
+    width: clamp(10.5rem, 25vw, 12.5rem);
+  }
+
+  .metaCard {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .sceneLabel {
+    font-size: 0.82rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .dock {
+    width: 9.75rem;
+  }
+
+  .metaCard {
+    display: none;
   }
 }
