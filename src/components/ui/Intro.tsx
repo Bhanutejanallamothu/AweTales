@@ -1,8 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import type { CSSProperties } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import css from './Intro.module.css';
 import SplitText from '@/components/ui/SplitText';
+
+type IntroScene = 'voice' | 'story' | 'awetales' | 'holding' | 'moving' | 'complete';
 
 interface SparkleConfig {
   left: string;
@@ -11,87 +14,141 @@ interface SparkleConfig {
   duration: string;
 }
 
+interface MotionState {
+  x: number;
+  y: number;
+  scale: number;
+}
+
+const BODY_PHASE_ATTR = 'data-intro-phase';
+const HOLD_DELAY_MS = 300;
+const MOVE_DURATION_MS = 800;
+
 export default function Intro() {
-  const [text, setText] = useState('Your Voice...');
-  const [opacity, setOpacity] = useState(1);
-  const [complete, setComplete] = useState(false);
-  const [scale, setScale] = useState(false);
+  const [scene, setScene] = useState<IntroScene>('voice');
   const [sparkles, setSparkles] = useState<SparkleConfig[]>([]);
+  const [motion, setMotion] = useState<MotionState>({ x: 0, y: 0, scale: 1 });
+  const motionRef = useRef<HTMLSpanElement>(null);
+  const timersRef = useRef<number[]>([]);
 
   useEffect(() => {
-    // Generate sparkles configuration on the client to avoid hydration mismatch
-    setSparkles([...Array(20)].map(() => ({
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      delay: `${Math.random() * 2}s`,
-      duration: `${2 + Math.random() * 2}s`
-    })));
+    setSparkles(
+      [...Array(20)].map(() => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        delay: `${Math.random() * 2}s`,
+        duration: `${2 + Math.random() * 2}s`,
+      }))
+    );
 
-    // Disable scrolling while intro plays
     document.body.style.overflow = 'hidden';
+    document.body.setAttribute(BODY_PHASE_ATTR, 'intro');
 
-    const t1 = setTimeout(() => {
-      setText('Becomes a Story...');
+    const schedule = (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(callback, delay);
+      timersRef.current.push(timer);
+    };
+
+    schedule(() => {
+      setScene('story');
     }, 1200);
 
-    const t2 = setTimeout(() => {
-      setText('AweTales');
-      setScale(true);
+    schedule(() => {
+      setScene('awetales');
     }, 2400);
 
-    const t3 = setTimeout(() => {
-      setOpacity(0);
-    }, 3500);
+    schedule(() => {
+      document.body.setAttribute(BODY_PHASE_ATTR, 'holding');
+      setScene('holding');
+    }, 3200);
 
-    const t4 = setTimeout(() => {
-      setComplete(true);
-      document.body.style.overflow = 'auto'; // restore scroll
-    }, 4000);
+    schedule(() => {
+      startHeaderLock();
+    }, 3200 + HOLD_DELAY_MS);
 
     return () => {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
+      timersRef.current.forEach((timer) => window.clearTimeout(timer));
       document.body.style.overflow = 'auto';
+      document.body.removeAttribute(BODY_PHASE_ATTR);
     };
   }, []);
 
-  if (complete) return null;
+  const startHeaderLock = () => {
+    const source = motionRef.current;
+    const target = document.querySelector<HTMLElement>('[data-navbar-logo-anchor]');
+
+    if (source && target) {
+      const sourceRect = source.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const sourceCenterX = sourceRect.left + sourceRect.width / 2;
+      const sourceCenterY = sourceRect.top + sourceRect.height / 2;
+      const targetCenterX = targetRect.left + targetRect.width / 2;
+      const targetCenterY = targetRect.top + targetRect.height / 2;
+
+      setMotion({
+        x: targetCenterX - sourceCenterX,
+        y: targetCenterY - sourceCenterY,
+        scale: Number((targetRect.width / sourceRect.width).toFixed(3)),
+      });
+    }
+
+    document.body.setAttribute(BODY_PHASE_ATTR, 'moving');
+
+    window.requestAnimationFrame(() => {
+      setScene('moving');
+    });
+
+    const completionTimer = window.setTimeout(() => {
+      document.body.setAttribute(BODY_PHASE_ATTR, 'complete');
+      document.body.style.overflow = 'auto';
+      setScene('complete');
+    }, MOVE_DURATION_MS);
+
+    timersRef.current.push(completionTimer);
+  };
+
+  if (scene === 'complete') {
+    return null;
+  }
+
+  const showSplitText = scene === 'voice' || scene === 'story';
+  const revealBackground = scene === 'holding' || scene === 'moving';
+  const moving = scene === 'moving';
 
   return (
-    <div className={css.intro} style={{ opacity }}>
-      {/* Particles Effect */}
-      <div className={css.sparklesWrapper}>
-        {sparkles.map((s, i) => (
-          <div key={i} className={css.sparkle} style={{
-            left: s.left,
-            top: s.top,
-            animationDelay: s.delay,
-            animationDuration: s.duration
-          }} />
+    <div className={`${css.intro} ${revealBackground ? css.backdropLifted : ''}`}>
+      <div className={`${css.sparklesWrapper} ${moving ? css.sparklesFading : ''}`}>
+        {sparkles.map((sparkle, index) => (
+          <div
+            key={index}
+            className={css.sparkle}
+            style={{
+              left: sparkle.left,
+              top: sparkle.top,
+              animationDelay: sparkle.delay,
+              animationDuration: sparkle.duration,
+            }}
+          />
         ))}
       </div>
 
       <div className={css.content}>
-        {text === 'Becomes a Story...' && (
+        {scene === 'story' && (
           <div className={css.waveform}>
-            <span/><span/><span/><span/><span/>
+            <span />
+            <span />
+            <span />
+            <span />
+            <span />
           </div>
         )}
-        
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+
+        {showSplitText ? (
           <SplitText
-            key={text}
-            text={text}
+            key={scene}
+            text={scene === 'voice' ? 'Your Voice...' : 'Becomes a Story...'}
             tag="span"
-            className={`
-              ${css.text} 
-              ${text === 'Your Voice...' ? css.phase1 : ''}
-              ${text === 'Becomes a Story...' ? css.phase2 : ''}
-              ${text === 'AweTales' ? css.phase3 : ''}
-              ${scale ? css.scaled : ''}
-            `}
+            className={`${css.text} ${scene === 'voice' ? css.phase1 : css.phase2}`}
             delay={50}
             duration={1.25}
             ease="power3.out"
@@ -99,8 +156,33 @@ export default function Intro() {
             from={{ opacity: 0, y: 40 }}
             to={{ opacity: 1, y: 0 }}
           />
-          {text === 'AweTales' && <span className={`${css.text} ${css.finalSparkle}`} style={{ marginLeft: '0.5rem' }}>✨</span>}
-        </div>
+        ) : (
+          <div
+            className={`${css.motionTrack} ${moving ? css.motionTrackMoving : ''}`}
+            style={
+              {
+                '--intro-move-x': `${motion.x}px`,
+                '--intro-move-y': `${motion.y}px`,
+                '--intro-move-scale': motion.scale,
+              } as CSSProperties
+            }
+          >
+            <div className={`${css.arcLayer} ${moving ? css.arcLayerMoving : ''}`}>
+              <div
+                className={`${css.logoLockup} ${scene === 'awetales' ? css.logoEntrance : ''} ${moving ? css.logoLockupMoving : ''}`}
+              >
+                <span ref={motionRef} className={css.wordmark}>
+                  AweTales
+                </span>
+                <span className={`${css.wordmarkGlow} ${moving ? css.wordmarkGlowFading : ''}`} aria-hidden="true" />
+                <span className={`${css.sparkAccent} ${moving ? css.sparkAccentFading : ''}`} aria-hidden="true">
+                  *
+                </span>
+                <span className={`${css.lightTrail} ${moving ? css.lightTrailVisible : ''}`} aria-hidden="true" />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

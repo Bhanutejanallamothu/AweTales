@@ -1,33 +1,41 @@
 .intro {
-  height: 100vh;
-  width: 100vw;
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, #ffffff 0%, #eef2ff 40%, #fdf4ff 100%);
-  transition: opacity 0.5s ease-out;
   overflow: hidden;
 }
 
+.intro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, #ffffff 0%, #eef2ff 40%, #fdf4ff 100%);
+  transition: opacity 0.4s ease;
+}
+
+.backdropLifted::before {
+  opacity: 0;
+}
+
 .content {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+  width: 100%;
+  padding: 1.5rem;
 }
 
 .text {
   font-family: 'Outfit', sans-serif;
-  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-size: clamp(2.75rem, 8vw, 6rem);
   font-weight: 800;
   text-align: center;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Moving gradient animation */
   background-size: 200% auto;
   animation: shine 3s linear infinite;
 }
@@ -38,42 +46,212 @@
   }
 }
 
-/* Phase 1: Your Voice... */
 .phase1 {
   color: #000000;
   text-shadow: 0 0 12px rgba(167, 139, 250, 0.8), 0 0 24px rgba(167, 139, 250, 0.4);
 }
 
-/* Phase 2: Becomes a Story... */
 .phase2 {
   color: #000000;
   text-shadow: 0 0 20px rgba(167, 139, 250, 0.6), 0 0 30px rgba(244, 114, 182, 0.4);
 }
 
-/* Phase 3: AweTales */
-.phase3 {
-  color: #000000;
-  text-shadow: 0 0 20px rgba(244, 114, 182, 0.8), 0 0 40px rgba(167, 139, 250, 0.6);
+.motionTrack {
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center center;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
-.scaled {
-  transform: scale(1.15);
+.motionTrackMoving {
+  transform: translate3d(var(--intro-move-x), var(--intro-move-y), 0) scale(var(--intro-move-scale));
 }
 
-.finalSparkle {
-  display: inline-block;
-  -webkit-text-fill-color: initial;
-  color: #FACC15;
-  text-shadow: 0 0 10px #FACC15;
-  animation: bounceScale 2s infinite;
+.arcLayer {
+  position: relative;
 }
 
-@keyframes bounceScale {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+.arcLayerMoving {
+  animation: headerArc 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
-/* Waveform Pulse */
+@keyframes headerArc {
+  0% {
+    transform: translateY(0);
+  }
+
+  42% {
+    transform: translateY(-18px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.logoLockup {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  color: #030712;
+  text-shadow: 0 0 24px rgba(244, 114, 182, 0.42), 0 0 44px rgba(167, 139, 250, 0.28);
+  will-change: opacity, filter;
+}
+
+.logoEntrance {
+  animation: wordmarkSettle 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.logoLockupMoving {
+  animation: logoLand 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes wordmarkSettle {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes logoLand {
+  0% {
+    opacity: 1;
+    filter: saturate(1.05);
+    transform: scale(1);
+    color: #030712;
+  }
+
+  75% {
+    opacity: 1;
+    transform: scale(1);
+    color: #030712;
+    text-shadow: 0 0 24px rgba(244, 114, 182, 0.42), 0 0 44px rgba(167, 139, 250, 0.28);
+  }
+
+  85% {
+    opacity: 1;
+    filter: saturate(1);
+    transform: scale(1.075);
+    color: #0f172a;
+    text-shadow: none;
+  }
+
+  100% {
+    opacity: 1;
+    filter: saturate(0.94);
+    transform: scale(1);
+    color: #0f172a;
+    text-shadow: none;
+  }
+}
+
+.wordmark {
+  position: relative;
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.wordmarkGlow {
+  position: absolute;
+  inset: -0.65rem -0.85rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.34) 0%, rgba(167, 139, 250, 0.16) 46%, rgba(255, 255, 255, 0) 76%);
+  filter: blur(16px);
+  z-index: -1;
+  animation: shimmerPulse 2.2s ease-in-out infinite;
+}
+
+.wordmarkGlowFading {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.3s ease 0.5s;
+}
+
+@keyframes shimmerPulse {
+  0%,
+  100% {
+    opacity: 0.75;
+    transform: scale(0.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
+
+.sparkAccent {
+  align-self: flex-start;
+  margin-top: 0.45rem;
+  font-size: clamp(1.15rem, 1.8vw, 1.65rem);
+  color: #fbbf24;
+  text-shadow: 0 0 14px rgba(251, 191, 36, 0.7);
+  animation: sparkleDance 1.9s ease-in-out infinite;
+}
+
+.sparkAccentFading {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+@keyframes sparkleDance {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-6px) scale(1.12);
+  }
+}
+
+.lightTrail {
+  position: absolute;
+  right: 45%;
+  top: 50%;
+  width: 18rem;
+  height: 2.2rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(167, 139, 250, 0.12) 18%, rgba(244, 114, 182, 0.3) 50%, rgba(255, 255, 255, 0) 100%);
+  filter: blur(16px);
+  opacity: 0;
+  transform: translateY(-50%) scaleX(0.65);
+  transform-origin: right center;
+  pointer-events: none;
+}
+
+.lightTrailVisible {
+  animation: lightTrailDrift 0.62s ease forwards;
+}
+
+@keyframes lightTrailDrift {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0.35);
+  }
+
+  24% {
+    opacity: 0.85;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-50%) translateX(-2rem) scaleX(1);
+  }
+}
+
 .waveform {
   display: flex;
   gap: 6px;
@@ -88,45 +266,92 @@
   width: 6px;
   height: 10px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #6EE7FF, #A78BFA, #F472B6);
+  background: linear-gradient(180deg, #6ee7ff, #a78bfa, #f472b6);
   box-shadow: 0 0 10px rgba(167, 139, 250, 0.8);
   animation: pulseHeight 1s ease-in-out infinite alternate;
 }
 
-.waveform span:nth-child(1) { animation-delay: 0.0s; }
-.waveform span:nth-child(2) { animation-delay: 0.2s; height: 30px; }
-.waveform span:nth-child(3) { animation-delay: 0.4s; height: 50px; }
-.waveform span:nth-child(4) { animation-delay: 0.2s; height: 30px; }
-.waveform span:nth-child(5) { animation-delay: 0.0s; }
-
-@keyframes pulseHeight {
-  0% { transform: scaleY(0.5); opacity: 0.6; }
-  100% { transform: scaleY(1.5); opacity: 1; box-shadow: 0 0 20px rgba(244, 114, 182, 0.8); }
+.waveform span:nth-child(1) {
+  animation-delay: 0s;
 }
 
-/* Sparkles / Particles */
+.waveform span:nth-child(2) {
+  animation-delay: 0.2s;
+  height: 30px;
+}
+
+.waveform span:nth-child(3) {
+  animation-delay: 0.4s;
+  height: 50px;
+}
+
+.waveform span:nth-child(4) {
+  animation-delay: 0.2s;
+  height: 30px;
+}
+
+.waveform span:nth-child(5) {
+  animation-delay: 0s;
+}
+
+@keyframes pulseHeight {
+  0% {
+    transform: scaleY(0.5);
+    opacity: 0.6;
+  }
+
+  100% {
+    transform: scaleY(1.5);
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(244, 114, 182, 0.8);
+  }
+}
+
 .sparklesWrapper {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
+  z-index: 1;
+  transition: opacity 0.28s ease;
+}
+
+.sparklesFading {
+  opacity: 0.2;
 }
 
 .sparkle {
   position: absolute;
   width: 4px;
   height: 4px;
-  background: white;
+  background: #ffffff;
   border-radius: 50%;
-  box-shadow: 0 0 10px #38BDF8, 0 0 20px #F472B6;
+  box-shadow: 0 0 10px #38bdf8, 0 0 20px #f472b6;
   opacity: 0;
   animation: floatUp 3s infinite;
 }
 
 @keyframes floatUp {
-  0% { transform: translateY(0); opacity: 0; }
-  50% { opacity: 0.8; }
-  100% { transform: translateY(-100px); opacity: 0; }
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 0.8;
+  }
+
+  100% {
+    transform: translateY(-100px);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .wordmark {
+    font-size: clamp(2.6rem, 14vw, 4.2rem);
+  }
+
+  .lightTrail {
+    width: 11rem;
+  }
 }
