@@ -12,11 +12,11 @@ export default function Home() {
       <Intro />
       <HomeStoryBear />
 
-      <section className={`${css.hero} ${css.snapSection} container flex-center`} data-bear-scene="welcome">
+      <section className={`${css.hero} ${css.snapSection}`} data-bear-scene="welcome" style={{ paddingLeft: 'clamp(2rem, 8vw, 6rem)', marginLeft: 0, alignItems: 'flex-start' }}>
         <div className={css.heroContent}>
           <SplitText
             text={`Magical\nStorytelling\nwith Your Voice`}
-            className="text-white form-title animate-fade-in"
+            className={`text-white ${css.heroTitle} animate-fade-in`}
             delay={50}
             duration={1.25}
             ease="power3.out"
@@ -25,11 +25,11 @@ export default function Home() {
             to={{ opacity: 1, y: 0 }}
             threshold={0.1}
             rootMargin="-100px"
-            textAlign="center"
+            textAlign="left"
           />
           <p
             className={`${css.heroSubtext} animate-fade-in`}
-            style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 auto 2rem auto' }}
+            style={{ animationDelay: '0.2s', maxWidth: '800px', margin: '0 0 2rem 0' }}
           >
             Create personalized audiobooks that bring you and your child closer together. Your voice, their favorite
             stories, endless magical moments.
@@ -46,7 +46,7 @@ export default function Home() {
               animationDelay: '0.6s',
               display: 'flex',
               gap: '1rem',
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               marginTop: '2rem',
               fontSize: '0.9rem',
               opacity: 0.8,

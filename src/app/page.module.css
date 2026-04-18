@@ -116,10 +116,19 @@
   border-radius: 50%;
 }
 
+.heroTitle {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(3.5rem, 7vw, 5rem);
+  font-weight: 800;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.03em;
+}
+
 .heroContent {
   max-width: 800px;
   width: 100%;
-  text-align: center;
+  text-align: left;
 }
 
 .heroSubtext {

@@ -275,21 +275,7 @@ export default function HomeStoryBear() {
 
   return (
     <>
-      <nav className={css.checkpointRail} aria-label="Home sections">
-        {STORY_SCENES.map((scene, index) => (
-          <button
-            key={scene.id}
-            type="button"
-            className={`${css.checkpointButton} ${scene.id === activeScene.id ? css.checkpointButtonActive : ''}`}
-            onClick={() => scrollToScene(scene.id)}
-            aria-label={`Go to ${scene.label}`}
-            aria-current={scene.id === activeScene.id ? 'true' : undefined}
-          >
-            <span className={css.checkpointDot}>{index + 1}</span>
-            <span className={css.checkpointLabel}>{scene.label}</span>
-          </button>
-        ))}
-      </nav>
+
 
       <div className={css.dockWrap}>
         <div ref={dockRef} className={css.dock}>
@@ -305,18 +291,7 @@ export default function HomeStoryBear() {
             />
           </div>
 
-          <div className={css.metaCard}>
-            <p className={css.kicker}>Story Companion</p>
-            <p className={css.sceneLabel}>{activeScene.label}</p>
-            <div className={css.progressDots} aria-hidden="true">
-              {STORY_SCENES.map((scene) => (
-                <span
-                  key={scene.id}
-                  className={`${css.progressDot} ${scene.id === activeScene.id ? css.progressDotActive : ''}`}
-                />
-              ))}
-            </div>
-          </div>
+
         </div>
       </div>
     </>

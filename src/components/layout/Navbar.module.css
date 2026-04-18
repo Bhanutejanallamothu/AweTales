@@ -2,10 +2,10 @@
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(255, 255, 255, 0.96);
+  background: #1C195E;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
   transition: opacity 0.28s cubic-bezier(0.4, 0, 0.2, 1), transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -59,7 +59,7 @@
   font-size: 1.7rem;
   font-weight: 800;
   letter-spacing: -0.05em;
-  color: #0f172a;
+  color: #ffffff;
   text-shadow: none;
 }
 
@@ -71,14 +71,14 @@
 }
 
 .link {
-  color: #475467;
+  color: #e2e8f0;
   font-size: 1.05rem;
   font-weight: 600;
   letter-spacing: -0.02em;
 }
 
 .link:hover {
-  color: #1f2937;
+  color: #ffffff;
 }
 
 .actions {
