@@ -82,6 +82,7 @@
   letter-spacing: -0.02em;
   background: linear-gradient(180deg, var(--foreground) 0%, rgba(226, 232, 240, 0.2) 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: introReveal 2s var(--transition-slow) forwards;
   opacity: 0;
