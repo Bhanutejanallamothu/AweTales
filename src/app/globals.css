@@ -46,6 +46,20 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+html[data-home-book='true'],
+body[data-home-book='true'] {
+  overflow: hidden;
+}
+
+body[data-home-book='true'] main {
+  min-height: 100svh !important;
+  overflow: hidden;
+}
+
+body[data-home-book='true'] footer {
+  display: none;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Outfit', sans-serif;
   line-height: 1.2;
@@ -193,4 +207,10 @@ button {
 .form-title {
   margin-bottom: 2rem;
   font-size: 2rem;
+}
+
+@media (max-width: 768px) {
+  body[data-home-book='true'] main {
+    min-height: 100svh !important;
+  }
 }

@@ -1,0 +1,649 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "eslint.config.mjs",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\eslint.config.mjs",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_eslint_config_mjs",
+      "community": 11,
+      "norm_label": "eslint.config.mjs"
+    },
+    {
+      "label": "next-env.d.ts",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\next-env.d.ts",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_next_env_d_ts",
+      "community": 12,
+      "norm_label": "next-env.d.ts"
+    },
+    {
+      "label": "next.config.ts",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\next.config.ts",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_next_config_ts",
+      "community": 13,
+      "norm_label": "next.config.ts"
+    },
+    {
+      "label": "layout.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\layout.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_layout_tsx",
+      "community": 2,
+      "norm_label": "layout.tsx"
+    },
+    {
+      "label": "RootLayout()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\layout.tsx",
+      "source_location": "L12",
+      "id": "layout_rootlayout",
+      "community": 2,
+      "norm_label": "rootlayout()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\page.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_page_tsx",
+      "community": 3,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "Home()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\page.tsx",
+      "source_location": "L9",
+      "id": "page_home",
+      "community": 3,
+      "norm_label": "home()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\about\\page.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_about_page_tsx",
+      "community": 14,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\blog\\page.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_blog_page_tsx",
+      "community": 15,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\dashboard\\page.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_dashboard_page_tsx",
+      "community": 16,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\login\\page.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_login_page_tsx",
+      "community": 17,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\playground\\page.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_playground_page_tsx",
+      "community": 18,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\read\\page.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_read_page_tsx",
+      "community": 4,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "StoryReader()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\read\\page.tsx",
+      "source_location": "L15",
+      "id": "page_storyreader",
+      "community": 4,
+      "norm_label": "storyreader()"
+    },
+    {
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\signup\\page.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_app_signup_page_tsx",
+      "community": 19,
+      "norm_label": "page.tsx"
+    },
+    {
+      "label": "Footer.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\layout\\Footer.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_layout_footer_tsx",
+      "community": 5,
+      "norm_label": "footer.tsx"
+    },
+    {
+      "label": "Footer()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\layout\\Footer.tsx",
+      "source_location": "L6",
+      "id": "footer_footer",
+      "community": 5,
+      "norm_label": "footer()"
+    },
+    {
+      "label": "Navbar.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\layout\\Navbar.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_layout_navbar_tsx",
+      "community": 20,
+      "norm_label": "navbar.tsx"
+    },
+    {
+      "label": "LenisProvider.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\providers\\LenisProvider.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_providers_lenisprovider_tsx",
+      "community": 6,
+      "norm_label": "lenisprovider.tsx"
+    },
+    {
+      "label": "LenisProvider()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\providers\\LenisProvider.tsx",
+      "source_location": "L10",
+      "id": "lenisprovider_lenisprovider",
+      "community": 6,
+      "norm_label": "lenisprovider()"
+    },
+    {
+      "label": "Button.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Button.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_ui_button_tsx",
+      "community": 7,
+      "norm_label": "button.tsx"
+    },
+    {
+      "label": "Button()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Button.tsx",
+      "source_location": "L13",
+      "id": "button_button",
+      "community": 7,
+      "norm_label": "button()"
+    },
+    {
+      "label": "Card.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Card.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_ui_card_tsx",
+      "community": 8,
+      "norm_label": "card.tsx"
+    },
+    {
+      "label": "Card()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Card.tsx",
+      "source_location": "L11",
+      "id": "card_card",
+      "community": 8,
+      "norm_label": "card()"
+    },
+    {
+      "label": "HomeParallaxScene.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "community": 0,
+      "norm_label": "homeparallaxscene.tsx"
+    },
+    {
+      "label": "getMeshMaterialName()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L45",
+      "id": "homeparallaxscene_getmeshmaterialname",
+      "community": 0,
+      "norm_label": "getmeshmaterialname()"
+    },
+    {
+      "label": "getLayerKind()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L50",
+      "id": "homeparallaxscene_getlayerkind",
+      "community": 0,
+      "norm_label": "getlayerkind()"
+    },
+    {
+      "label": "inferLayerKinds()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L74",
+      "id": "homeparallaxscene_inferlayerkinds",
+      "community": 0,
+      "norm_label": "inferlayerkinds()"
+    },
+    {
+      "label": "configureMesh()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L119",
+      "id": "homeparallaxscene_configuremesh",
+      "community": 0,
+      "norm_label": "configuremesh()"
+    },
+    {
+      "label": "setLayerDepth()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L155",
+      "id": "homeparallaxscene_setlayerdepth",
+      "community": 0,
+      "norm_label": "setlayerdepth()"
+    },
+    {
+      "label": "disposeScene()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L160",
+      "id": "homeparallaxscene_disposescene",
+      "community": 0,
+      "norm_label": "disposescene()"
+    },
+    {
+      "label": "HomeParallaxScene()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L188",
+      "id": "homeparallaxscene_homeparallaxscene",
+      "community": 0,
+      "norm_label": "homeparallaxscene()"
+    },
+    {
+      "label": "Input.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Input.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_ui_input_tsx",
+      "community": 21,
+      "norm_label": "input.tsx"
+    },
+    {
+      "label": "Intro.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Intro.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_ui_intro_tsx",
+      "community": 9,
+      "norm_label": "intro.tsx"
+    },
+    {
+      "label": "schedule()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Intro.tsx",
+      "source_location": "L87",
+      "id": "intro_schedule",
+      "community": 9,
+      "norm_label": "schedule()"
+    },
+    {
+      "label": "ScrollFloat.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\ScrollFloat.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_ui_scrollfloat_tsx",
+      "community": 22,
+      "norm_label": "scrollfloat.tsx"
+    },
+    {
+      "label": "SectionParallaxBackground.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "community": 1,
+      "norm_label": "sectionparallaxbackground.tsx"
+    },
+    {
+      "label": "configureMesh()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L38",
+      "id": "sectionparallaxbackground_configuremesh",
+      "community": 1,
+      "norm_label": "configuremesh()"
+    },
+    {
+      "label": "disposeScene()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L74",
+      "id": "sectionparallaxbackground_disposescene",
+      "community": 1,
+      "norm_label": "disposescene()"
+    },
+    {
+      "label": "assignLayerKinds()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L102",
+      "id": "sectionparallaxbackground_assignlayerkinds",
+      "community": 1,
+      "norm_label": "assignlayerkinds()"
+    },
+    {
+      "label": "SectionParallaxBackground()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L118",
+      "id": "sectionparallaxbackground_sectionparallaxbackground",
+      "community": 1,
+      "norm_label": "sectionparallaxbackground()"
+    },
+    {
+      "label": "SplitText.tsx",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SplitText.tsx",
+      "source_location": "L1",
+      "id": "d_upgrade_awetales_src_components_ui_splittext_tsx",
+      "community": 10,
+      "norm_label": "splittext.tsx"
+    },
+    {
+      "label": "SplitText()",
+      "file_type": "code",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SplitText.tsx",
+      "source_location": "L27",
+      "id": "splittext_splittext",
+      "community": 10,
+      "norm_label": "splittext()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\layout.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_app_layout_tsx",
+      "_tgt": "layout_rootlayout",
+      "source": "d_upgrade_awetales_src_app_layout_tsx",
+      "target": "layout_rootlayout",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_app_page_tsx",
+      "_tgt": "page_home",
+      "source": "d_upgrade_awetales_src_app_page_tsx",
+      "target": "page_home",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\app\\read\\page.tsx",
+      "source_location": "L15",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_app_read_page_tsx",
+      "_tgt": "page_storyreader",
+      "source": "d_upgrade_awetales_src_app_read_page_tsx",
+      "target": "page_storyreader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\layout\\Footer.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_layout_footer_tsx",
+      "_tgt": "footer_footer",
+      "source": "d_upgrade_awetales_src_components_layout_footer_tsx",
+      "target": "footer_footer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\providers\\LenisProvider.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_providers_lenisprovider_tsx",
+      "_tgt": "lenisprovider_lenisprovider",
+      "source": "d_upgrade_awetales_src_components_providers_lenisprovider_tsx",
+      "target": "lenisprovider_lenisprovider",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Button.tsx",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_button_tsx",
+      "_tgt": "button_button",
+      "source": "d_upgrade_awetales_src_components_ui_button_tsx",
+      "target": "button_button",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Card.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_card_tsx",
+      "_tgt": "card_card",
+      "source": "d_upgrade_awetales_src_components_ui_card_tsx",
+      "target": "card_card",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L45",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "_tgt": "homeparallaxscene_getmeshmaterialname",
+      "source": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "target": "homeparallaxscene_getmeshmaterialname",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L50",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "_tgt": "homeparallaxscene_getlayerkind",
+      "source": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "target": "homeparallaxscene_getlayerkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "_tgt": "homeparallaxscene_inferlayerkinds",
+      "source": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "target": "homeparallaxscene_inferlayerkinds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L119",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "_tgt": "homeparallaxscene_configuremesh",
+      "source": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "target": "homeparallaxscene_configuremesh",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L155",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "_tgt": "homeparallaxscene_setlayerdepth",
+      "source": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "target": "homeparallaxscene_setlayerdepth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L160",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "_tgt": "homeparallaxscene_disposescene",
+      "source": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "target": "homeparallaxscene_disposescene",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L188",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "_tgt": "homeparallaxscene_homeparallaxscene",
+      "source": "d_upgrade_awetales_src_components_ui_homeparallaxscene_tsx",
+      "target": "homeparallaxscene_homeparallaxscene",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\HomeParallaxScene.tsx",
+      "source_location": "L51",
+      "weight": 1.0,
+      "_src": "homeparallaxscene_getlayerkind",
+      "_tgt": "homeparallaxscene_getmeshmaterialname",
+      "source": "homeparallaxscene_getmeshmaterialname",
+      "target": "homeparallaxscene_getlayerkind",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\Intro.tsx",
+      "source_location": "L87",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_intro_tsx",
+      "_tgt": "intro_schedule",
+      "source": "d_upgrade_awetales_src_components_ui_intro_tsx",
+      "target": "intro_schedule",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "_tgt": "sectionparallaxbackground_configuremesh",
+      "source": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "target": "sectionparallaxbackground_configuremesh",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L74",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "_tgt": "sectionparallaxbackground_disposescene",
+      "source": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "target": "sectionparallaxbackground_disposescene",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L102",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "_tgt": "sectionparallaxbackground_assignlayerkinds",
+      "source": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "target": "sectionparallaxbackground_assignlayerkinds",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SectionParallaxBackground.tsx",
+      "source_location": "L118",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "_tgt": "sectionparallaxbackground_sectionparallaxbackground",
+      "source": "d_upgrade_awetales_src_components_ui_sectionparallaxbackground_tsx",
+      "target": "sectionparallaxbackground_sectionparallaxbackground",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "D:\\upgrade\\AweTales\\src\\components\\ui\\SplitText.tsx",
+      "source_location": "L27",
+      "weight": 1.0,
+      "_src": "d_upgrade_awetales_src_components_ui_splittext_tsx",
+      "_tgt": "splittext_splittext",
+      "source": "d_upgrade_awetales_src_components_ui_splittext_tsx",
+      "target": "splittext_splittext",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": []
+}
