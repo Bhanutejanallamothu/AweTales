@@ -52,7 +52,8 @@ body[data-home-book='true'] {
 }
 
 body[data-home-book='true'] main {
-  min-height: 100svh !important;
+  min-height: 100vh !important;
+  min-height: 100lvh !important;
   overflow: hidden;
 }
 
@@ -211,6 +212,7 @@ button {
 
 @media (max-width: 768px) {
   body[data-home-book='true'] main {
-    min-height: 100svh !important;
+    min-height: 100vh !important;
+    min-height: 100lvh !important;
   }
 }
