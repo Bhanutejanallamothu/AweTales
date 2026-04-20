@@ -12,7 +12,7 @@ export default function Home() {
       <Intro />
       <HomeParallaxScene />
 
-      <section className={`${css.hero} ${css.snapSection}`} style={{ paddingLeft: 'clamp(2rem, 8vw, 6rem)', marginLeft: 0, alignItems: 'flex-start' }}>
+      <section className={`${css.hero} ${css.snapSection}`} style={{ paddingLeft: 0, alignItems: 'flex-start' }}>
         <div className={css.heroContent}>
           <SplitText
             text={`Magical\nStorytelling\nwith Your Voice`}

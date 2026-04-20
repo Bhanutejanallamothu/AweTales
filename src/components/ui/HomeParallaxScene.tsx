@@ -262,7 +262,7 @@ export default function HomeParallaxScene() {
       );
 
       pivot.scale.setScalar(layerScale * modelScaleFactor);
-      pivot.position.set(width < 700 ? -0.05 : width < 1100 ? 0.16 : 0.3, width < 700 ? -0.08 : -0.04, 0);
+      pivot.position.set(width < 700 ? -0.18 : width < 1100 ? -0.08 : -0.24, width < 700 ? -0.08 : -0.04, 0);
     };
 
     resizeObserver = new ResizeObserver(fitScene);
