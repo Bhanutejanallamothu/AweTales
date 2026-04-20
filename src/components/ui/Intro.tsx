@@ -1,7 +1,7 @@
 "use client";
 
 import type { CSSProperties } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import css from './Intro.module.css';
 import SplitText from '@/components/ui/SplitText';
 
@@ -32,49 +32,7 @@ export default function Intro() {
   const trackRef = useRef<HTMLDivElement>(null);
   const timersRef = useRef<number[]>([]);
 
-  useEffect(() => {
-    setSparkles(
-      [...Array(20)].map(() => ({
-        left: `${Math.random() * 100}%`,
-        top: `${Math.random() * 100}%`,
-        delay: `${Math.random() * 2}s`,
-        duration: `${2 + Math.random() * 2}s`,
-      }))
-    );
-
-    document.body.style.overflow = 'hidden';
-    document.body.setAttribute(BODY_PHASE_ATTR, 'intro');
-
-    const schedule = (callback: () => void, delay: number) => {
-      const timer = window.setTimeout(callback, delay);
-      timersRef.current.push(timer);
-    };
-
-    schedule(() => {
-      setScene('story');
-    }, 1200);
-
-    schedule(() => {
-      setScene('awetales');
-    }, 2400);
-
-    schedule(() => {
-      document.body.setAttribute(BODY_PHASE_ATTR, 'holding');
-      setScene('holding');
-    }, 3200);
-
-    schedule(() => {
-      startHeaderLock();
-    }, 3200 + HOLD_DELAY_MS);
-
-    return () => {
-      timersRef.current.forEach((timer) => window.clearTimeout(timer));
-      document.body.style.overflow = 'auto';
-      document.body.removeAttribute(BODY_PHASE_ATTR);
-    };
-  }, []);
-
-  const startHeaderLock = () => {
+  const startHeaderLock = useCallback(() => {
     const source = motionRef.current;
     const target = document.querySelector<HTMLElement>('[data-navbar-logo-anchor]');
 
@@ -106,7 +64,56 @@ export default function Intro() {
     }, MOVE_DURATION_MS);
 
     timersRef.current.push(completionTimer);
-  };
+  }, []);
+
+  useEffect(() => {
+    const timers = timersRef.current;
+    let sparkleFrame = 0;
+
+    sparkleFrame = window.requestAnimationFrame(() => {
+      setSparkles(
+        [...Array(20)].map(() => ({
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          delay: `${Math.random() * 2}s`,
+          duration: `${2 + Math.random() * 2}s`,
+        }))
+      );
+    });
+
+    document.body.style.overflow = 'hidden';
+    document.body.setAttribute(BODY_PHASE_ATTR, 'intro');
+
+    const schedule = (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(callback, delay);
+      timers.push(timer);
+    };
+
+    schedule(() => {
+      setScene('story');
+    }, 1200);
+
+    schedule(() => {
+      setScene('awetales');
+    }, 2400);
+
+    schedule(() => {
+      document.body.setAttribute(BODY_PHASE_ATTR, 'holding');
+      setScene('holding');
+    }, 3200);
+
+    schedule(() => {
+      startHeaderLock();
+    }, 3200 + HOLD_DELAY_MS);
+
+    return () => {
+      window.cancelAnimationFrame(sparkleFrame);
+      timers.forEach((timer) => window.clearTimeout(timer));
+      timers.length = 0;
+      document.body.style.overflow = 'auto';
+      document.body.removeAttribute(BODY_PHASE_ATTR);
+    };
+  }, [startHeaderLock]);
 
   if (scene === 'complete') {
     return null;

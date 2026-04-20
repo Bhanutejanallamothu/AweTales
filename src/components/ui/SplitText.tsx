@@ -50,13 +50,30 @@ const SplitText: React.FC<SplitTextProps> = ({
   }, [onLetterAnimationComplete]);
 
   useEffect(() => {
+    let cancelled = false;
+    let frameId = 0;
+
+    const markFontsLoaded = () => {
+      if (!cancelled) {
+        setFontsLoaded(true);
+      }
+    };
+
     if (document.fonts.status === 'loaded') {
-      setFontsLoaded(true);
+      frameId = window.requestAnimationFrame(markFontsLoaded);
     } else {
       document.fonts.ready.then(() => {
-        setFontsLoaded(true);
+        markFontsLoaded();
       });
     }
+
+    return () => {
+      cancelled = true;
+
+      if (frameId) {
+        window.cancelAnimationFrame(frameId);
+      }
+    };
   }, []);
 
   useGSAP(
@@ -71,7 +88,7 @@ const SplitText: React.FC<SplitTextProps> = ({
       if (el._rbsplitInstance) {
         try {
           el._rbsplitInstance.revert();
-        } catch (_) {}
+        } catch {}
         el._rbsplitInstance = undefined;
       }
 
@@ -135,7 +152,7 @@ const SplitText: React.FC<SplitTextProps> = ({
         });
         try {
           splitInstance.revert();
-        } catch (_) {}
+        } catch {}
         el._rbsplitInstance = undefined;
       };
     },

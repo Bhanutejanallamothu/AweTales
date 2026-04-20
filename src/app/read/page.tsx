@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import InteractiveBear from '@/components/ui/InteractiveBear';
 import css from './read.module.css';
 
 const SAMPLE_STORY = [
@@ -73,11 +72,6 @@ export default function StoryReader() {
         </Link>
       </nav>
 
-      {/* Main Feature */}
-      <InteractiveBear 
-        isTalking={isTalking} 
-        storyText={displayedText} 
-      />
     </div>
   );
 }

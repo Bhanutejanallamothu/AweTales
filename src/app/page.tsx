@@ -2,7 +2,7 @@ import React from 'react';
 import css from './page.module.css';
 import Button from '@/components/ui/Button';
 import Card from '@/components/ui/Card';
-import HomeStoryBear from '@/components/ui/HomeStoryBear';
+import HomeParallaxScene from '@/components/ui/HomeParallaxScene';
 import Intro from '@/components/ui/Intro';
 import SplitText from '@/components/ui/SplitText';
 
@@ -10,9 +10,9 @@ export default function Home() {
   return (
     <div className={css.page}>
       <Intro />
-      <HomeStoryBear />
+      <HomeParallaxScene />
 
-      <section className={`${css.hero} ${css.snapSection}`} data-bear-scene="welcome" style={{ paddingLeft: 'clamp(2rem, 8vw, 6rem)', marginLeft: 0, alignItems: 'flex-start' }}>
+      <section className={`${css.hero} ${css.snapSection}`} style={{ paddingLeft: 'clamp(2rem, 8vw, 6rem)', marginLeft: 0, alignItems: 'flex-start' }}>
         <div className={css.heroContent}>
           <SplitText
             text={`Magical\nStorytelling\nwith Your Voice`}
@@ -62,7 +62,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${css.snapSection} container`} data-bear-scene="steps">
+      <section className={`${css.snapSection} container`}>
         <div className={css.sectionHeader}>
           <h2 className="text-gradient-gold">How It Works</h2>
           <p>Just 3 simple steps to create magical storytelling experiences</p>
@@ -86,7 +86,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${css.snapSection} ${css.emotionalSection}`} data-bear-scene="dreams">
+      <section className={`${css.snapSection} ${css.emotionalSection}`}>
         <div className="container flex-center">
           <div className={css.emotionalContent}>
             <h2>
@@ -100,7 +100,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${css.snapSection} container`} data-bear-scene="features">
+      <section className={`${css.snapSection} container`}>
         <div className={css.sectionHeader}>
           <h2>Why AweTales?</h2>
         </div>
@@ -122,7 +122,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${css.snapSection} ${css.testimonialsSection}`} data-bear-scene="love">
+      <section className={`${css.snapSection} ${css.testimonialsSection}`}>
         <div className="container">
           <div className={css.sectionHeader}>
             <h2 className="text-gradient-gold">Families Love AweTales</h2>
@@ -144,7 +144,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${css.snapSection} container flex-center`} data-bear-scene="cta">
+      <section className={`${css.snapSection} container flex-center`}>
         <Card glow className={css.ctaCard}>
           <h2>Ready to Create Your First Magical Story?</h2>
           <p>Join thousands of families creating meaningful bedtime moments.</p>
