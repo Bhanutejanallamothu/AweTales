@@ -20,12 +20,6 @@ interface FrameTransition {
   direction: FrameDirection;
 }
 
-const HERO_PARALLAX_LAYERS = [
-  { name: 'node_id7', strength: 0.018, renderOrder: 10 },
-  { name: 'node_id4', strength: 0.045, renderOrder: 20 },
-  { name: 'node_id10', strength: 0.09, renderOrder: 30 },
-];
-
 export default function Home() {
   const [activeFrame, setActiveFrame] = useState(0);
   const [transition, setTransition] = useState<FrameTransition | null>(null);
@@ -220,8 +214,8 @@ export default function Home() {
             <SectionParallaxBackground
               modelPath="/bg/Herosection-bg-1.glb"
               className={css.sectionScene}
-              coverScale={1.3}
-              namedLayers={HERO_PARALLAX_LAYERS}
+              coverScale={1.16}
+              offsetX={-0.16}
               materialMode="original"
               enablePivotTilt={false}
             />

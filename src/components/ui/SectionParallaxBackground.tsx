@@ -57,6 +57,23 @@ const layerMotionSettings: Record<
   background: { strength: 0.016, verticalStrength: 0.011, rotationStrength: 0.0012, renderOrder: 10 },
 };
 
+function createLayerMotion(
+  object: THREE.Object3D,
+  options: Pick<LayerMotion, 'strength' | 'verticalStrength' | 'rotationStrength'>,
+  reduceMotion: boolean
+) {
+  return {
+    object,
+    homePosition: object.position.clone(),
+    homeRotation: object.rotation.clone(),
+    strength: options.strength,
+    verticalStrength: options.verticalStrength,
+    rotationStrength: options.rotationStrength,
+    positionEase: reduceMotion ? 1 : POSITION_EASE,
+    rotationEase: reduceMotion ? 1 : ROTATION_EASE,
+  } satisfies LayerMotion;
+}
+
 function prepareMesh(mesh: THREE.Mesh, materialMode: MaterialMode) {
   mesh.frustumCulled = false;
 
@@ -149,6 +166,65 @@ function disposeScene(root: THREE.Object3D) {
   });
 }
 
+function hasRenderableMesh(target: THREE.Object3D) {
+  let foundMesh = false;
+
+  target.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      foundMesh = true;
+    }
+  });
+
+  return foundMesh;
+}
+
+function getObjectDepth(target: THREE.Object3D) {
+  let depth = 0;
+  let current = target.parent;
+
+  while (current) {
+    depth += 1;
+    current = current.parent;
+  }
+
+  return depth;
+}
+
+function findThreeLayerRoot(root: THREE.Object3D): THREE.Object3D | null {
+  let bestMatch: THREE.Object3D | null = null;
+  let bestDepth = -1;
+
+  root.traverse((child) => {
+    if (child.children.length !== 3 || !child.children.every(hasRenderableMesh)) {
+      return;
+    }
+
+    const depth = getObjectDepth(child);
+
+    if (depth > bestDepth) {
+      bestMatch = child;
+      bestDepth = depth;
+    }
+  });
+
+  return bestMatch;
+}
+
+function getAutomaticLayerObjects(root: THREE.Object3D): Array<{ object: THREE.Object3D; layer: LayerKind }> {
+  const threeLayerRoot = findThreeLayerRoot(root);
+
+  if (!threeLayerRoot) {
+    return [];
+  }
+
+  // Updated exports arrive as a fixed 3-layer stack in authoring order.
+  return [
+    { object: threeLayerRoot.children[0], layer: 'background' as const },
+    { object: threeLayerRoot.children[1], layer: 'log' as const },
+    { object: threeLayerRoot.children[2], layer: 'bear' as const },
+  ];
+}
+
 function assignLayerKinds(meshes: THREE.Mesh[]) {
   const layerOrder: LayerKind[] = ['bear', 'log', 'background'];
   const worldPosition = new THREE.Vector3();
@@ -184,7 +260,8 @@ export default function SectionParallaxBackground({
 
   useEffect(() => {
     const mount = mountRef.current;
-    const interactiveArea = mount?.parentElement;
+    const interactiveAreaCandidate = mount?.closest('[data-parallax-root]') ?? mount?.parentElement ?? null;
+    const interactiveArea = interactiveAreaCandidate instanceof HTMLElement ? interactiveAreaCandidate : null;
 
     if (!mount || !interactiveArea) {
       return;
@@ -303,36 +380,56 @@ export default function SectionParallaxBackground({
             setRenderOrder(object, layer.renderOrder ?? (index + 1) * 10);
 
             return [
-              {
+              createLayerMotion(
                 object,
-                homePosition: object.position.clone(),
-                homeRotation: object.rotation.clone(),
-                strength: layer.strength * pointerStrength,
-                verticalStrength: (layer.verticalStrength ?? layer.strength) * pointerStrength,
-                rotationStrength: (layer.rotationStrength ?? 0) * pointerStrength,
-                positionEase: reduceMotion ? 1 : POSITION_EASE,
-                rotationEase: reduceMotion ? 1 : ROTATION_EASE,
-              } satisfies LayerMotion,
+                {
+                  strength: layer.strength * pointerStrength,
+                  verticalStrength: (layer.verticalStrength ?? layer.strength) * pointerStrength,
+                  rotationStrength: (layer.rotationStrength ?? 0) * pointerStrength,
+                },
+                reduceMotion
+              ),
             ];
           }) ?? [];
 
         if (resolvedNamedLayers.length > 0) {
           layers.push(...resolvedNamedLayers);
         } else {
-          assignLayerKinds(meshes).forEach(({ mesh, layer }) => {
-            const settings = layerMotionSettings[layer];
-            mesh.renderOrder = settings.renderOrder;
-            layers.push({
-              object: mesh,
-              homePosition: mesh.position.clone(),
-              homeRotation: mesh.rotation.clone(),
-              strength: settings.strength * pointerStrength,
-              verticalStrength: settings.verticalStrength * pointerStrength,
-              rotationStrength: settings.rotationStrength * pointerStrength,
-              positionEase: 1,
-              rotationEase: 1,
+          const automaticLayers = getAutomaticLayerObjects(modelRoot);
+
+          if (automaticLayers.length > 0) {
+            automaticLayers.forEach(({ object, layer }) => {
+              const settings = layerMotionSettings[layer];
+              setRenderOrder(object, settings.renderOrder);
+              layers.push(
+                createLayerMotion(
+                  object,
+                  {
+                    strength: settings.strength * pointerStrength,
+                    verticalStrength: settings.verticalStrength * pointerStrength,
+                    rotationStrength: settings.rotationStrength * pointerStrength,
+                  },
+                  reduceMotion
+                )
+              );
             });
-          });
+          } else {
+            assignLayerKinds(meshes).forEach(({ mesh, layer }) => {
+              const settings = layerMotionSettings[layer];
+              mesh.renderOrder = settings.renderOrder;
+              layers.push(
+                createLayerMotion(
+                  mesh,
+                  {
+                    strength: settings.strength * pointerStrength,
+                    verticalStrength: settings.verticalStrength * pointerStrength,
+                    rotationStrength: settings.rotationStrength * pointerStrength,
+                  },
+                  reduceMotion
+                )
+              );
+            });
+          }
         }
 
         fitScene();
