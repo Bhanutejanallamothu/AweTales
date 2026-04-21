@@ -5,6 +5,16 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import css from './SectionParallaxBackground.module.css';
 
+interface NamedParallaxLayer {
+  name: string;
+  strength: number;
+  verticalStrength?: number;
+  rotationStrength?: number;
+  renderOrder?: number;
+}
+
+type MaterialMode = 'flat' | 'original';
+
 interface SectionParallaxBackgroundProps {
   modelPath: string;
   className?: string;
@@ -15,6 +25,9 @@ interface SectionParallaxBackgroundProps {
   offsetYRatio?: number;
   viewportHeight?: number;
   pointerStrength?: number;
+  namedLayers?: NamedParallaxLayer[];
+  materialMode?: MaterialMode;
+  enablePivotTilt?: boolean;
 }
 
 interface LayerMotion {
@@ -24,9 +37,16 @@ interface LayerMotion {
   strength: number;
   verticalStrength: number;
   rotationStrength: number;
+  positionEase: number;
+  rotationEase: number;
 }
 
 type LayerKind = 'bear' | 'log' | 'background';
+
+const POINTER_EASE = 0.08;
+const POSITION_EASE = 0.1;
+const ROTATION_EASE = 0.12;
+const PIVOT_EASE = 0.08;
 
 const layerMotionSettings: Record<
   LayerKind,
@@ -37,11 +57,31 @@ const layerMotionSettings: Record<
   background: { strength: 0.016, verticalStrength: 0.011, rotationStrength: 0.0012, renderOrder: 10 },
 };
 
-function configureMesh(mesh: THREE.Mesh, renderOrder: number) {
+function prepareMesh(mesh: THREE.Mesh, materialMode: MaterialMode) {
   mesh.frustumCulled = false;
-  mesh.renderOrder = renderOrder;
 
   const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+
+  if (materialMode === 'original') {
+    materials.forEach((material) => {
+      const layeredMaterial = material as THREE.Material & {
+        alphaTest?: number;
+        side?: THREE.Side;
+        transparent?: boolean;
+        depthWrite?: boolean;
+        needsUpdate?: boolean;
+      };
+
+      layeredMaterial.transparent = true;
+      layeredMaterial.alphaTest = Math.max(layeredMaterial.alphaTest ?? 0, 0.01);
+      layeredMaterial.side = THREE.DoubleSide;
+      layeredMaterial.depthWrite = false;
+      layeredMaterial.needsUpdate = true;
+    });
+
+    return;
+  }
+
   const flatMaterials = materials.map((material) => {
     const texturedMaterial = material as THREE.Material & {
       map?: THREE.Texture | null;
@@ -71,6 +111,14 @@ function configureMesh(mesh: THREE.Mesh, renderOrder: number) {
   });
 
   mesh.material = Array.isArray(mesh.material) ? flatMaterials : flatMaterials[0];
+}
+
+function setRenderOrder(target: THREE.Object3D, renderOrder: number) {
+  target.traverse((child) => {
+    if (child instanceof THREE.Mesh) {
+      child.renderOrder = renderOrder;
+    }
+  });
 }
 
 function disposeScene(root: THREE.Object3D) {
@@ -127,6 +175,9 @@ export default function SectionParallaxBackground({
   offsetYRatio = 0,
   viewportHeight = 2,
   pointerStrength = 1,
+  namedLayers,
+  materialMode = 'flat',
+  enablePivotTilt = true,
 }: SectionParallaxBackgroundProps) {
   const mountRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
@@ -152,6 +203,12 @@ export default function SectionParallaxBackground({
     const scene = new THREE.Scene();
     const pivot = new THREE.Group();
     scene.add(pivot);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.8);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    directionalLight.position.set(2, 4, 3);
+    scene.add(ambientLight);
+    scene.add(directionalLight);
 
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100);
     camera.position.set(0, 0, 8);
@@ -230,22 +287,53 @@ export default function SectionParallaxBackground({
         const meshes: THREE.Mesh[] = [];
         modelRoot.traverse((child) => {
           if (child instanceof THREE.Mesh) {
+            prepareMesh(child, materialMode);
             meshes.push(child);
           }
         });
 
-        assignLayerKinds(meshes).forEach(({ mesh, layer }) => {
-          const settings = layerMotionSettings[layer];
-          configureMesh(mesh, settings.renderOrder);
-          layers.push({
-            object: mesh,
-            homePosition: mesh.position.clone(),
-            homeRotation: mesh.rotation.clone(),
-            strength: settings.strength * pointerStrength,
-            verticalStrength: settings.verticalStrength * pointerStrength,
-            rotationStrength: settings.rotationStrength * pointerStrength,
+        const resolvedNamedLayers =
+          namedLayers?.flatMap((layer, index) => {
+            const object = modelRoot?.getObjectByName(layer.name);
+
+            if (!object) {
+              return [];
+            }
+
+            setRenderOrder(object, layer.renderOrder ?? (index + 1) * 10);
+
+            return [
+              {
+                object,
+                homePosition: object.position.clone(),
+                homeRotation: object.rotation.clone(),
+                strength: layer.strength * pointerStrength,
+                verticalStrength: (layer.verticalStrength ?? layer.strength) * pointerStrength,
+                rotationStrength: (layer.rotationStrength ?? 0) * pointerStrength,
+                positionEase: reduceMotion ? 1 : POSITION_EASE,
+                rotationEase: reduceMotion ? 1 : ROTATION_EASE,
+              } satisfies LayerMotion,
+            ];
+          }) ?? [];
+
+        if (resolvedNamedLayers.length > 0) {
+          layers.push(...resolvedNamedLayers);
+        } else {
+          assignLayerKinds(meshes).forEach(({ mesh, layer }) => {
+            const settings = layerMotionSettings[layer];
+            mesh.renderOrder = settings.renderOrder;
+            layers.push({
+              object: mesh,
+              homePosition: mesh.position.clone(),
+              homeRotation: mesh.rotation.clone(),
+              strength: settings.strength * pointerStrength,
+              verticalStrength: settings.verticalStrength * pointerStrength,
+              rotationStrength: settings.rotationStrength * pointerStrength,
+              positionEase: 1,
+              rotationEase: 1,
+            });
           });
-        });
+        }
 
         fitScene();
         setReady(true);
@@ -269,7 +357,7 @@ export default function SectionParallaxBackground({
 
       pointerTarget.set(
         ((event.clientX - rect.left) / rect.width - 0.5) * 2,
-        ((event.clientY - rect.top) / rect.height - 0.5) * 2
+        -(((event.clientY - rect.top) / rect.height) * 2 - 1)
       );
     };
 
@@ -282,22 +370,32 @@ export default function SectionParallaxBackground({
     window.addEventListener('blur', settlePointer);
 
     const animate = () => {
-      pointerCurrent.lerp(pointerTarget, reduceMotion ? 1 : 0.06);
+      pointerCurrent.lerp(pointerTarget, reduceMotion ? 1 : POINTER_EASE);
 
       layers.forEach((layer) => {
-        layer.object.position.set(
-          layer.homePosition.x + pointerCurrent.x * layer.strength,
-          layer.homePosition.y - pointerCurrent.y * layer.verticalStrength,
-          layer.homePosition.z
-        );
-        layer.object.rotation.set(
-          layer.homeRotation.x + pointerCurrent.y * layer.rotationStrength * 0.4,
-          layer.homeRotation.y + pointerCurrent.x * layer.rotationStrength * 0.35,
-          layer.homeRotation.z + pointerCurrent.x * layer.rotationStrength
-        );
+        const targetPositionX = layer.homePosition.x + pointerCurrent.x * layer.strength;
+        const targetPositionY = layer.homePosition.y + pointerCurrent.y * layer.verticalStrength;
+        const targetRotationX = layer.homeRotation.x - pointerCurrent.y * layer.rotationStrength * 0.4;
+        const targetRotationY = layer.homeRotation.y + pointerCurrent.x * layer.rotationStrength * 0.35;
+        const targetRotationZ = layer.homeRotation.z + pointerCurrent.x * layer.rotationStrength;
+
+        layer.object.position.x += (targetPositionX - layer.object.position.x) * layer.positionEase;
+        layer.object.position.y += (targetPositionY - layer.object.position.y) * layer.positionEase;
+        layer.object.position.z += (layer.homePosition.z - layer.object.position.z) * layer.positionEase;
+
+        layer.object.rotation.x += (targetRotationX - layer.object.rotation.x) * layer.rotationEase;
+        layer.object.rotation.y += (targetRotationY - layer.object.rotation.y) * layer.rotationEase;
+        layer.object.rotation.z += (targetRotationZ - layer.object.rotation.z) * layer.rotationEase;
       });
 
-      pivot.rotation.set(-pointerCurrent.y * 0.008 * pointerStrength, pointerCurrent.x * 0.01 * pointerStrength, 0);
+      const pivotTargetX = enablePivotTilt ? pointerCurrent.y * 0.008 * pointerStrength : 0;
+      const pivotTargetY = enablePivotTilt ? pointerCurrent.x * 0.01 * pointerStrength : 0;
+      const pivotEase = reduceMotion ? 1 : PIVOT_EASE;
+
+      pivot.rotation.x += (pivotTargetX - pivot.rotation.x) * pivotEase;
+      pivot.rotation.y += (pivotTargetY - pivot.rotation.y) * pivotEase;
+      pivot.rotation.z += (0 - pivot.rotation.z) * pivotEase;
+
       renderer.render(scene, camera);
       frameId = window.requestAnimationFrame(animate);
     };
@@ -320,7 +418,19 @@ export default function SectionParallaxBackground({
       renderer.dispose();
       renderer.domElement.remove();
     };
-  }, [coverScale, modelPath, offsetX, offsetXRatio, offsetY, offsetYRatio, pointerStrength, viewportHeight]);
+  }, [
+    coverScale,
+    enablePivotTilt,
+    materialMode,
+    modelPath,
+    namedLayers,
+    offsetX,
+    offsetXRatio,
+    offsetY,
+    offsetYRatio,
+    pointerStrength,
+    viewportHeight,
+  ]);
 
   return (
     <div className={`${css.scene} ${ready ? css.ready : ''} ${className}`} aria-hidden="true">
