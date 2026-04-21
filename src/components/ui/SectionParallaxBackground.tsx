@@ -210,6 +210,18 @@ function findThreeLayerRoot(root: THREE.Object3D): THREE.Object3D | null {
   return bestMatch;
 }
 
+function getLayerMetrics(target: THREE.Object3D) {
+  const bounds = new THREE.Box3().setFromObject(target);
+  const size = bounds.getSize(new THREE.Vector3());
+  const center = bounds.getCenter(new THREE.Vector3());
+
+  return {
+    object: target,
+    area: size.x * size.y,
+    centerY: center.y,
+  };
+}
+
 function getAutomaticLayerObjects(root: THREE.Object3D): Array<{ object: THREE.Object3D; layer: LayerKind }> {
   const threeLayerRoot = findThreeLayerRoot(root);
 
@@ -217,11 +229,21 @@ function getAutomaticLayerObjects(root: THREE.Object3D): Array<{ object: THREE.O
     return [];
   }
 
-  // Updated exports arrive as a fixed 3-layer stack in authoring order.
+  const layerMetrics = threeLayerRoot.children.map(getLayerMetrics);
+  const backgroundLayer = [...layerMetrics].sort((left, right) => right.area - left.area)[0];
+  const foregroundLayers = layerMetrics
+    .filter(({ object }) => object !== backgroundLayer.object)
+    .sort((left, right) => right.centerY - left.centerY);
+
+  if (foregroundLayers.length < 2) {
+    return [];
+  }
+
+  // New exports keep the background as the largest plane, while the bear sits above the log.
   return [
-    { object: threeLayerRoot.children[0], layer: 'background' as const },
-    { object: threeLayerRoot.children[1], layer: 'log' as const },
-    { object: threeLayerRoot.children[2], layer: 'bear' as const },
+    { object: backgroundLayer.object, layer: 'background' as const },
+    { object: foregroundLayers[0].object, layer: 'bear' as const },
+    { object: foregroundLayers[1].object, layer: 'log' as const },
   ];
 }
 

@@ -294,6 +294,26 @@
   flex: 0 0 40%;
 }
 
+.middleFrame .linkedTopSection .sectionHeader {
+  max-width: 46rem;
+  width: 100%;
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.middleFrame .linkedTopSection .stepsGrid {
+  max-width: 46rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin-right: auto;
+}
+
+.middleFrame .linkedTopSection .stepCard:nth-child(3) {
+  grid-column: 1 / span 2;
+  max-width: 24rem;
+  justify-self: center;
+}
+
 .whyFrame .fullFrameSection {
   flex: 1 1 auto;
 }
@@ -323,13 +343,22 @@
   max-width: 800px;
   width: 100%;
   text-align: left;
+  color: #111111;
 }
 
 .heroSubtext {
   font-size: 1.25rem;
-  color: #a1a1aa;
+  color: #111111;
   margin-bottom: 2.5rem;
   line-height: 1.6;
+}
+
+.heroButton {
+  color: #111111;
+}
+
+.heroMiniFlow {
+  color: #111111;
 }
 
 .sectionHeader {
@@ -520,6 +549,17 @@
   .middleFrame,
   .bottomFrame {
     justify-content: center;
+  }
+
+  .middleFrame .linkedTopSection .sectionHeader,
+  .middleFrame .linkedTopSection .stepsGrid {
+    max-width: none;
+  }
+
+  .middleFrame .linkedTopSection .stepCard:nth-child(3) {
+    grid-column: auto;
+    max-width: none;
+    justify-self: stretch;
   }
 
   .snapSection {

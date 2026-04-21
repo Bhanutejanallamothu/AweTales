@@ -223,7 +223,7 @@ export default function Home() {
               <div className={css.heroContent}>
                 <SplitText
                   text={`Magical\nStorytelling\nwith Your Voice`}
-                  className={`text-white ${css.heroTitle} animate-fade-in`}
+                  className={`${css.heroTitle} animate-fade-in`}
                   delay={50}
                   duration={1.25}
                   ease="power3.out"
@@ -242,7 +242,7 @@ export default function Home() {
                   stories, endless magical moments.
                 </p>
                 <div className="animate-fade-in" style={{ animationDelay: '0.4s' }}>
-                  <Button size="lg" variant="primary" href="/signup">
+                  <Button size="lg" variant="primary" href="/signup" className={css.heroButton}>
                     Sign Up
                   </Button>
                 </div>
