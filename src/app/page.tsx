@@ -304,7 +304,7 @@ export default function Home() {
             </section>
 
             <section className={`${css.snapSection} ${css.linkedBottomSection} ${css.emotionalSection}`}>
-              <div className="container flex-center">
+              <div className={`container ${css.emotionalWrap}`}>
                 <div className={css.emotionalContent}>
                   <h2>
                     Your Voice. Their Dreams. <span className="text-gradient">Forever.</span>

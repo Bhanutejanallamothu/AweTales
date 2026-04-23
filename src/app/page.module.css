@@ -283,22 +283,30 @@
 }
 
 .middleFrame {
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .middleFrame .linkedTopSection {
-  flex: 0 0 60%;
+  flex: 0 0 auto;
+  padding-top: clamp(1.25rem, 2.5vh, 2rem);
+  padding-right: clamp(18rem, 30vw, 28rem);
 }
 
 .middleFrame .linkedBottomSection {
-  flex: 0 0 40%;
+  flex: 0 0 auto;
+  margin-top: auto;
+  padding-top: clamp(1rem, 2vh, 1.5rem);
+  padding-bottom: clamp(2rem, 4vh, 3rem);
+  padding-right: clamp(18rem, 30vw, 28rem);
 }
 
 .middleFrame .linkedTopSection .sectionHeader {
   max-width: 46rem;
   width: 100%;
+  text-align: left;
   margin-left: 0;
   margin-right: auto;
+  margin-bottom: 1.5rem;
 }
 
 .middleFrame .linkedTopSection .stepsGrid {
@@ -306,6 +314,7 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.5rem;
   margin-right: auto;
+  align-self: flex-start;
 }
 
 .middleFrame .linkedTopSection .stepCard:nth-child(3) {
@@ -336,29 +345,51 @@
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 1.5rem;
-  letter-spacing: -0.03em;
+  letter-spacing: 0;
+  color: #F5F5F5;
+  transform: perspective(1200px) rotateX(12deg) translateZ(0);
+  transform-style: preserve-3d;
+  text-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.48),
+    0 2px 0 rgba(242, 231, 219, 0.44),
+    0 3px 0 rgba(229, 208, 183, 0.42),
+    0 4px 0 rgba(210, 178, 144, 0.44),
+    0 5px 0 rgba(186, 143, 106, 0.48),
+    0 6px 0 rgba(160, 116, 82, 0.52),
+    0 7px 0 rgba(132, 91, 61, 0.58),
+    0 8px 0 rgba(107, 71, 47, 0.64),
+    0 9px 0 rgba(74, 46, 31, 0.74),
+    0 18px 30px rgba(25, 14, 10, 0.38),
+    0 28px 52px rgba(25, 14, 10, 0.28),
+    8px 22px 40px rgba(25, 14, 10, 0.18);
+  filter:
+    drop-shadow(0 14px 20px rgba(25, 14, 10, 0.2))
+    drop-shadow(0 24px 42px rgba(25, 14, 10, 0.18));
 }
 
 .heroContent {
   max-width: 800px;
   width: 100%;
   text-align: left;
-  color: #111111;
+  color: #F5F5F5;
 }
 
 .heroSubtext {
   font-size: 1.25rem;
-  color: #111111;
+  color: #F5F5F5;
   margin-bottom: 2.5rem;
   line-height: 1.6;
+  text-shadow: 0 4px 16px rgba(20, 10, 7, 0.3);
 }
 
 .heroButton {
-  color: #111111;
+  color: #F5F5F5;
+  text-shadow: 0 2px 8px rgba(20, 10, 7, 0.28);
 }
 
 .heroMiniFlow {
-  color: #111111;
+  color: #F5F5F5;
+  text-shadow: 0 4px 16px rgba(20, 10, 7, 0.28);
 }
 
 .sectionHeader {
@@ -385,6 +416,21 @@
 .stepCard {
   text-align: center;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 15rem;
+  gap: 0.75rem;
+}
+
+.stepCard h3 {
+  margin-bottom: 0;
+}
+
+.stepCard p {
+  margin: 0;
+  line-height: 1.55;
 }
 
 .stepIcon {
@@ -411,19 +457,29 @@
   padding-top: clamp(1.25rem, 2.5vh, 2rem);
 }
 
+.emotionalWrap {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
 .emotionalContent {
-  max-width: 700px;
+  max-width: 38rem;
+  margin-right: auto;
+  text-align: left;
 }
 
 .emotionalContent h2 {
   font-size: 2.5rem;
   margin-bottom: 1.5rem;
+  max-width: 12ch;
 }
 
 .emotionalContent p {
   font-size: 1.25rem;
   color: #d4d4d8;
   line-height: 1.8;
+  max-width: 32rem;
 }
 
 .featuresGrid {
@@ -551,15 +607,41 @@
     justify-content: center;
   }
 
+  .middleFrame .linkedTopSection,
+  .middleFrame .linkedBottomSection {
+    margin-top: 0;
+    padding-right: 0;
+  }
+
   .middleFrame .linkedTopSection .sectionHeader,
   .middleFrame .linkedTopSection .stepsGrid {
     max-width: none;
+  }
+
+  .middleFrame .linkedTopSection .sectionHeader {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .middleFrame .linkedTopSection .stepCard:nth-child(3) {
     grid-column: auto;
     max-width: none;
     justify-self: stretch;
+  }
+
+  .emotionalWrap {
+    justify-content: center;
+  }
+
+  .emotionalContent {
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .emotionalContent h2,
+  .emotionalContent p {
+    max-width: none;
   }
 
   .snapSection {
